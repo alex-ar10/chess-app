@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="74mm"
+   height="74mm"
+   viewBox="0 0 74 74"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486, 2022-12-01)"
+   sodipodi:docname="favicon.svg"
+   inkscape:export-filename="chessboard.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.24705882"
+     inkscape:showpageshadow="false"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="true"
+     inkscape:zoom="1.1569893"
+     inkscape:cx="251.0827"
+     inkscape:cy="226.88195"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1"
+     showguides="true"
+     shape-rendering="crispEdges"
+     showborder="false"
+     borderlayer="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid1849"
+       originx="0"
+       originy="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="opacity:1;fill:#763e21;fill-opacity:1;stroke:none;stroke-width:0;stroke-dasharray:none"
+       id="rect627"
+       width="74"
+       height="74"
+       x="0"
+       y="-5.5511151e-17" />
+    <rect
+       style="fill:#cfa468;fill-opacity:1;stroke:none;stroke-width:0;stroke-dasharray:none"
+       id="rect737-77"
+       width="36.999043"
+       height="37"
+       x="36.999958"
+       y="0" />
+    <rect
+       style="fill:#cfa468;fill-opacity:1;stroke:none;stroke-width:0;stroke-dasharray:none"
+       id="rect737-10-7"
+       width="36.999043"
+       height="37"
+       x="0"
+       y="37" />
+  </g>
+</svg>
