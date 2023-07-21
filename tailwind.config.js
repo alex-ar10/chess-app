@@ -13,6 +13,8 @@ module.exports = {
       xl: "1280px",
     },
     extend: {
+      width: { "37px": "37px" },
+      height: { "37px": "37px" },
       colors: {
         backround1: "#FFF",
         background2: "#E8E8E8",
