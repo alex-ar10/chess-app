@@ -1,7 +1,7 @@
 export default class ChessLogic {
   // explain these with chatGPT
-  private chessboard: string[][];
-  private coordinates: { [key: string]: { color: string; pieceType: string } };
+  public chessboard: string[][];
+  public coordinates: { [key: string]: { color: string; pieceType: string } };
 
   constructor() {
     this.chessboard = [

@@ -8,12 +8,12 @@ export default function Chessboard() {
   const cellSize = 37;
 
   // Initialize the ChessLogic instance
-  const chessLogic = new ChessLogic();
+  const chessLogic: ChessLogic = new ChessLogic();
 
   // Use state to store the current state of the chessboard
   const [chessboardState, setChessboardState] = useState(chessLogic.chessboard);
 
-  const handlePieceMove = (source, destination) => {
+  const handlePieceMove = (source: string, destination: string) => {
     // Call the movePiece method from ChessLogic
     const isMoveValid = chessLogic.movePiece(source, destination);
 
