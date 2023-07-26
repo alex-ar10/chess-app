@@ -1,9 +1,27 @@
+import { useState } from "react";
 import Image from "next/image";
 import chessboard from "@/assets/chessboard.svg";
+import ChessLogic from "../ChessLogic/ChessLogic";
 
 export default function Chessboard() {
   const gridSize = 8;
   const cellSize = 37;
+
+  // Initialize the ChessLogic instance
+  const chessLogic = new ChessLogic();
+
+  // Use state to store the current state of the chessboard
+  const [chessboardState, setChessboardState] = useState(chessLogic.chessboard);
+
+  const handlePieceMove = (source, destination) => {
+    // Call the movePiece method from ChessLogic
+    const isMoveValid = chessLogic.movePiece(source, destination);
+
+    // Update the chessboard state if the move is valid
+    if (isMoveValid) {
+      setChessboardState(chessLogic.chessboard);
+    }
+  };
 
   return (
     <main className="relative">
@@ -22,6 +40,13 @@ export default function Chessboard() {
               style={{
                 top: `${Math.floor(index / gridSize) * cellSize}px`,
                 left: `${(index % gridSize) * cellSize}px`,
+              }}
+              onClick={() => {
+                // Handle click events on the chessboard squares
+                // Call handlePieceMove with source and destination coordinates
+                const source = id; // e.g., "A8", "B6"
+                const destination = "A1"; // For testing purposes, you can hardcode the destination or handle it through user input
+                handlePieceMove(source, destination);
               }}
             />
           );

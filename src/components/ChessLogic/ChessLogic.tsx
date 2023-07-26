@@ -1,4 +1,8 @@
 export default class ChessLogic {
+  // explain these with chatGPT
+  private chessboard: string[][];
+  private coordinates: { [key: string]: { color: string; pieceType: string } };
+
   constructor() {
     this.chessboard = [
       ["br", "bn", "bb", "bq", "bk", "bb", "bn", "br"],
@@ -29,7 +33,7 @@ export default class ChessLogic {
       }
     }
   }
-  movePiece(source, destination) {
+  movePiece(source: string, destination: string) {
     const sourceRow = 8 - parseInt(source[1], 10); // Convert chess notation to row index
     const sourceCol = source.charCodeAt(0) - 97; // Convert chess notation to column index
     const destinationRow = 8 - parseInt(destination[1], 10); // Convert chess notation to row index
@@ -68,7 +72,13 @@ export default class ChessLogic {
     return true;
   }
 
-  isValidMove(piece, sourceRow, sourceCol, destinationRow, destinationCol) {
+  isValidMove(
+    piece: string,
+    sourceRow: number,
+    sourceCol: number,
+    destinationRow: number,
+    destinationCol: number
+  ) {
     // Check if the destination coordinates are within the chessboard boundaries
     if (
       destinationRow < 0 ||
@@ -228,7 +238,7 @@ export default class ChessLogic {
         ) {
           const destinationPiece =
             this.chessboard[destinationRow][destinationCol];
-          if ((destinationPiece = "" || destinationPiece[0] !== color)) {
+          if (destinationPiece === "" || destinationPiece[0] !== color) {
             return true;
           }
         }
@@ -264,17 +274,17 @@ export default class ChessLogic {
         }
 
         // En passant
-        const lastMove = this.getLastMove();
-        if (
-          lastMove &&
-          lastMove.piece[1] === "p" && // The last moved piece was a pawn
-          Math.abs(lastMove.destinationRow - lastMove.sourceRow) === 2 && // The pawn moved two squares
-          destinationCol === lastMove.destinationCol && // The current move is capturing en passant
-          sourceRow === (color === "w" ? 3 : 4) && // The pawn is at the correct starting row
-          Math.abs(sourceCol - lastMove.destinationCol) === 1 // The pawn is capturing diagonally
-        ) {
-          return true;
-        }
+        // const lastMove = this.getLastMove();
+        // if (
+        //   lastMove &&
+        //   lastMove.piece[1] === "p" && // The last moved piece was a pawn
+        //   Math.abs(lastMove.destinationRow - lastMove.sourceRow) === 2 && // The pawn moved two squares
+        //   destinationCol === lastMove.destinationCol && // The current move is capturing en passant
+        //   sourceRow === (color === "w" ? 3 : 4) && // The pawn is at the correct starting row
+        //   Math.abs(sourceCol - lastMove.destinationCol) === 1 // The pawn is capturing diagonally
+        // ) {
+        //   return true;
+        // }
 
         return false;
 
