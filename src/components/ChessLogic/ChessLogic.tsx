@@ -69,11 +69,217 @@ export default class ChessLogic {
   }
 
   isValidMove(piece, sourceRow, sourceCol, destinationRow, destinationCol) {
-    // Implement your logic here to check if the move is valid
-    // This will depend on the rules of chess and the type of piece being moved
-    // You may need to consider factors like piece type, capturing, blocking, etc.
-    // Return true if the move is valid, false otherwise.
-    // For simplicity, let's assume all moves are valid for now.
-    return true;
+    // Check if the destination coordinates are within the chessboard boundaries
+    if (
+      destinationRow < 0 ||
+      destinationRow > 7 ||
+      destinationCol < 0 ||
+      destinationCol > 7
+    ) {
+      return false;
+    }
+
+    const color = piece[0]; // 'w' for white, 'b' for black
+    const pieceType = piece[1]; // 'r' for rook, 'n' for knight, 'b' for bishop, 'q' for queen, 'k' for king, 'p' for pawn
+
+    // Check if the destination square has a piece the same color the moving piece
+    if (
+      this.chessboard[destinationRow][destinationCol] !== "" &&
+      this.chessboard[destinationRow][destinationCol][0] === color
+    ) {
+      return false;
+    }
+
+    // Calculate the absolute differences between the source and destination coordinates
+    const rowDiff = Math.abs(destinationRow - sourceRow);
+    const colDiff = Math.abs(destinationCol - sourceCol);
+
+    switch (pieceType) {
+      case "r":
+        if ((rowDiff === 0 && colDiff > 0) || (rowDiff > 0 && colDiff === 0)) {
+          // Check if there are any pieces in the rook's path
+          const rowDir =
+            destinationRow === sourceRow
+              ? 0
+              : destinationRow > sourceRow
+              ? 1
+              : -1; // Direction of row movement
+          const colDir =
+            destinationCol === sourceCol
+              ? 0
+              : destinationCol > sourceCol
+              ? 1
+              : -1; // Direction of column movement
+
+          let currentRow = sourceRow + rowDir;
+          let currentCol = sourceCol + colDir;
+
+          while (
+            currentRow !== destinationRow ||
+            currentCol !== destinationCol
+          ) {
+            const currentPiece = this.chessboard[currentRow][currentCol];
+
+            if (currentPiece !== "") {
+              if (currentPiece[0] === color) {
+                return false; // There is a piece of the same color in the rook's path, move is invalid
+              } else {
+                break; // There is a piece of a different color in the rooks's path, capture
+              }
+            }
+
+            currentRow += rowDir;
+            currentCol += colDir;
+          }
+
+          return true; // No pieces in the path, the move is valid for a rook
+        }
+        return false;
+      // If the move is neither horizontal nor vertical, it's invalid for a rook
+
+      case "n":
+        if (
+          (rowDiff === 2 && colDiff === 1) ||
+          (rowDiff === 1 && colDiff === 2)
+        ) {
+          // Check if there are any pieces in the knights path
+          const destinationPiece =
+            this.chessboard[destinationRow][destinationCol];
+          if (destinationPiece === "" || destinationPiece[0] !== piece[0]) {
+            return true;
+          }
+        }
+        return false;
+
+      case "b":
+        if (rowDiff === 1 && colDiff === 1) {
+          const rowDir = destinationRow > sourceRow ? 1 : -1;
+          const colDir = destinationCol > sourceCol ? 1 : -1;
+
+          let currentRow = sourceRow + rowDir;
+          let currentCol = sourceCol + colDir;
+
+          while (
+            currentRow !== destinationRow &&
+            currentCol !== destinationCol
+          ) {
+            const currentPiece = this.chessboard[currentRow][currentCol];
+
+            if (currentPiece !== "") {
+              if (currentPiece[0] === color) {
+                return false;
+              } else {
+                break;
+              }
+            }
+            currentRow += rowDir;
+            currentCol += colDir;
+          }
+          return true;
+        }
+        return false;
+
+      case "q":
+        if (
+          (rowDiff === 1 && colDiff === 1) ||
+          (rowDiff === 1 && colDiff === 0) ||
+          (rowDiff === 0 && colDiff === 1)
+        ) {
+          const rowDir =
+            destinationRow === sourceRow
+              ? 0
+              : destinationRow > sourceRow
+              ? 1
+              : -1; // Direction of row movement
+          const colDir =
+            destinationCol === sourceCol
+              ? 0
+              : destinationCol > sourceCol
+              ? 1
+              : -1; // Direction of column movement
+
+          let currentRow = sourceRow + rowDir;
+          let currentCol = sourceCol + colDir;
+
+          while (
+            currentRow !== destinationRow ||
+            currentCol !== destinationCol
+          ) {
+            const currentPiece = this.chessboard[currentRow][currentCol];
+
+            if (currentPiece !== "") {
+              if (currentPiece[0] === color) {
+                return false;
+              } else {
+                break;
+              }
+            }
+            currentRow += rowDir;
+            currentCol += colDir;
+          }
+          return true;
+        }
+        return false;
+      case "k":
+        if (
+          (rowDiff === 1 && colDiff === 1) ||
+          (rowDiff === 1 && colDiff === 0) ||
+          (rowDiff === 0 && colDiff === 1)
+        ) {
+          const destinationPiece =
+            this.chessboard[destinationRow][destinationCol];
+          if ((destinationPiece = "" || destinationPiece[0] !== color)) {
+            return true;
+          }
+        }
+        return false;
+
+      case "p":
+        // Determine the direction of movement based on the color of the pawn
+        const pawnDirection = color === "w" ? -1 : 1;
+
+        // Pawn's normal move (one square forward)
+        if (
+          colDiff === 0 &&
+          ((rowDiff === 1 &&
+            this.chessboard[destinationRow][destinationCol] === "") || // Move one square forward
+            (rowDiff === 2 &&
+              sourceRow === (color === "w" ? 6 : 1) && // Move two squares forward on the first move
+              this.chessboard[destinationRow][destinationCol] === "" &&
+              this.chessboard[destinationRow + pawnDirection][
+                destinationCol
+              ] === ""))
+        ) {
+          return true;
+        }
+
+        // Pawn's capturing move (diagonally)
+        if (
+          rowDiff === 1 &&
+          colDiff === 1 &&
+          this.chessboard[destinationRow][destinationCol] !== "" &&
+          this.chessboard[destinationRow][destinationCol][0] !== color
+        ) {
+          return true;
+        }
+
+        // En passant
+        const lastMove = this.getLastMove();
+        if (
+          lastMove &&
+          lastMove.piece[1] === "p" && // The last moved piece was a pawn
+          Math.abs(lastMove.destinationRow - lastMove.sourceRow) === 2 && // The pawn moved two squares
+          destinationCol === lastMove.destinationCol && // The current move is capturing en passant
+          sourceRow === (color === "w" ? 3 : 4) && // The pawn is at the correct starting row
+          Math.abs(sourceCol - lastMove.destinationCol) === 1 // The pawn is capturing diagonally
+        ) {
+          return true;
+        }
+
+        return false;
+
+      default:
+        return false;
+    }
   }
 }
