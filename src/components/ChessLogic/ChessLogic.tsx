@@ -3,6 +3,7 @@ export default class ChessLogic {
   public chessboard: string[][];
   public coordinates: { [key: string]: { color: string; pieceType: string } };
 
+  // General chessboard layout
   constructor() {
     this.chessboard = [
       ["br", "bn", "bb", "bq", "bk", "bb", "bn", "br"],
@@ -33,6 +34,7 @@ export default class ChessLogic {
       }
     }
   }
+
   movePiece(source: string, destination: string) {
     const sourceRow = 8 - parseInt(source[1], 10); // Convert chess notation to row index
     const sourceCol = source.charCodeAt(0) - 97; // Convert chess notation to column index
@@ -106,6 +108,7 @@ export default class ChessLogic {
 
     switch (pieceType) {
       case "r":
+        // if condition is checking whether either the row or the column has to stay the same when the rook is moving
         if ((rowDiff === 0 && colDiff > 0) || (rowDiff > 0 && colDiff === 0)) {
           // Check if there are any pieces in the rook's path
           const rowDir =
@@ -113,17 +116,19 @@ export default class ChessLogic {
               ? 0
               : destinationRow > sourceRow
               ? 1
-              : -1; // Direction of row movement
+              : -1; // Defines the direction of the row movement (1 or -1)
           const colDir =
             destinationCol === sourceCol
               ? 0
               : destinationCol > sourceCol
               ? 1
-              : -1; // Direction of column movement
+              : -1; // Defines the direction of the column movement (1 or -1)
 
+          // Add the movement to the currentRow/Col variables
           let currentRow = sourceRow + rowDir;
           let currentCol = sourceCol + colDir;
 
+          // while currentRow/Col are not equal to the destinationRow/Col, the direction get's added to the currentRow/Col
           while (
             currentRow !== destinationRow ||
             currentCol !== destinationCol
@@ -148,6 +153,7 @@ export default class ChessLogic {
       // If the move is neither horizontal nor vertical, it's invalid for a rook
 
       case "n":
+        // if condition is checking whether the movement is always in an L shape (+/- 1 rows & +/- 2 col or +/- 2 rows & +/- 1 col)
         if (
           (rowDiff === 2 && colDiff === 1) ||
           (rowDiff === 1 && colDiff === 2)
@@ -162,10 +168,12 @@ export default class ChessLogic {
         return false;
 
       case "b":
-        if (rowDiff === 1 && colDiff === 1) {
-          const rowDir = destinationRow > sourceRow ? 1 : -1;
-          const colDir = destinationCol > sourceCol ? 1 : -1;
+        // if condition is checking whether the movement of the bishop is diagonal (+/- row === +/- col)
+        if (rowDiff === colDiff) {
+          const rowDir = destinationRow > sourceRow ? 1 : -1; // Defines the direction of the row movement (1 or -1)
+          const colDir = destinationCol > sourceCol ? 1 : -1; // Defines the direction of the column movement (1 or -1)
 
+          // Add the movement to the currentRow/Col variables
           let currentRow = sourceRow + rowDir;
           let currentCol = sourceCol + colDir;
 
@@ -293,3 +301,6 @@ export default class ChessLogic {
     }
   }
 }
+
+// Check on how to divide the isValidMove function into smaller classes
+// by having classes for each piece and the pieces having their own isValidMove function

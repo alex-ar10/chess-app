@@ -1,0 +1,1 @@
+// class for the queen
