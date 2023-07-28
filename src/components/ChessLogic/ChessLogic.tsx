@@ -5,14 +5,14 @@ export default class ChessLogic {
   // General chessboard layout
   constructor() {
     this.chessboard = [
-      ["br", "bn", "bb", "bq", "bk", "bb", "bn", "br"],
-      ["bp", "bp", "bp", "bp", "bp", "bp", "bp", "bp"],
+      ["rb", "nb", "bb", "qb", "kb", "bb", "nb", "rb"],
+      ["pb", "pb", "pb", "pb", "pb", "pb", "pb", "pb"],
       ["", "", "", "", "", "", "", ""],
       ["", "", "", "", "", "", "", ""],
       ["", "", "", "", "", "", "", ""],
       ["", "", "", "", "", "", "", ""],
-      ["wp", "wp", "wp", "wp", "wp", "wp", "wp", "wp"],
-      ["wr", "wn", "wb", "wq", "wk", "wb", "wn", "wr"],
+      ["pw", "pw", "pw", "pw", "pw", "pw", "pw", "pw"],
+      ["rw", "nw", "bw", "qw", "kw", "bw", "nw", "rw"],
     ];
 
     this.coordinates = {};
