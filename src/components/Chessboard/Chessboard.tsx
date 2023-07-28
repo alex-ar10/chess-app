@@ -2,6 +2,21 @@ import { useState } from "react";
 import Image from "next/image";
 import chessboard from "@/assets/chessboard.svg";
 import ChessLogic from "../ChessLogic/ChessLogic";
+import {
+  BlackRook,
+  BlackKnight,
+  BlackBishop,
+  BlackQueen,
+  BlackKing,
+  BlackPawn,
+  WhiteRook,
+  WhiteKnight,
+  WhiteBishop,
+  WhiteQueen,
+  WhiteKing,
+  WhitePawn,
+} from "../PiecesSVG/PiecesSVG";
+import { log } from "console";
 
 export default function Chessboard() {
   const gridSize = 8;
@@ -12,6 +27,10 @@ export default function Chessboard() {
 
   // Use state to store the current state of the chessboard
   const [chessboardState, setChessboardState] = useState(chessLogic.chessboard);
+
+  // Initialize the piecePositions state with the initial coordinates from ChessLogic
+  const [piecePositions, setPiecePositions] = useState(chessLogic.coordinates);
+  console.log(piecePositions);
 
   const handlePieceMove = (source: string, destination: string) => {
     // Call the movePiece method from ChessLogic
@@ -26,10 +45,10 @@ export default function Chessboard() {
   return (
     <main className="relative">
       <div className="top-7 left-7 absolute">
+        {/* Render the chessboard squares */}
         {Array.from({ length: gridSize * gridSize }).map((_, index) => {
           const column = String.fromCharCode(65 + (index % gridSize));
           const row = 8 - Math.floor(index / gridSize);
-
           const id = `${column}${row}`;
 
           return (
@@ -42,13 +61,20 @@ export default function Chessboard() {
                 left: `${(index % gridSize) * cellSize}px`,
               }}
               onClick={() => {
-                // Handle click events on the chessboard squares
-                // Call handlePieceMove with source and destination coordinates
-                const source = id; // e.g., "A8", "B6"
-                const destination = "A1"; // For testing purposes, you can hardcode the destination or handle it through user input
+                const source = id;
+                const destination = "A1"; // Hardcoding destination for testing purposes
                 handlePieceMove(source, destination);
               }}
-            />
+            >
+              {/* Render the chess pieces */}
+              {piecePositions[id] &&
+                // Render the corresponding SVG component based on piece type and color
+                (piecePositions[id].color === "w" ? (
+                  <WhiteKing />
+                ) : (
+                  <BlackPawn />
+                ))}
+            </div>
           );
         })}
       </div>

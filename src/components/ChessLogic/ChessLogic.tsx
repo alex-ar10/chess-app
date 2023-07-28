@@ -1,5 +1,4 @@
 export default class ChessLogic {
-  // explain these with chatGPT
   public chessboard: string[][];
   public coordinates: { [key: string]: { color: string; pieceType: string } };
 
@@ -280,20 +279,6 @@ export default class ChessLogic {
         ) {
           return true;
         }
-
-        // En passant
-        // const lastMove = this.getLastMove();
-        // if (
-        //   lastMove &&
-        //   lastMove.piece[1] === "p" && // The last moved piece was a pawn
-        //   Math.abs(lastMove.destinationRow - lastMove.sourceRow) === 2 && // The pawn moved two squares
-        //   destinationCol === lastMove.destinationCol && // The current move is capturing en passant
-        //   sourceRow === (color === "w" ? 3 : 4) && // The pawn is at the correct starting row
-        //   Math.abs(sourceCol - lastMove.destinationCol) === 1 // The pawn is capturing diagonally
-        // ) {
-        //   return true;
-        // }
-
         return false;
 
       default:
@@ -301,6 +286,3 @@ export default class ChessLogic {
     }
   }
 }
-
-// Check on how to divide the isValidMove function into smaller classes
-// by having classes for each piece and the pieces having their own isValidMove function
