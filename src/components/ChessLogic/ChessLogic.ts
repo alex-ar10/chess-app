@@ -1,4 +1,4 @@
-export default class ChessLogic {
+class ChessLogic {
   public chessboard: string[][];
   public coordinates: { [key: string]: { color: string; pieceType: string } };
 
@@ -286,3 +286,5 @@ export default class ChessLogic {
     }
   }
 }
+
+export default ChessLogic;
