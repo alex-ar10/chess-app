@@ -4,15 +4,26 @@ class ChessLogic {
 
   // General chessboard layout
   constructor() {
+    // this.chessboard = [
+    //   ["br", "bn", "bb", "bq", "bk", "bb", "bn", "br"],
+    //   ["bp", "bp", "bp", "bp", "bp", "bp", "bp", "bp"],
+    //   ["", "", "", "", "", "", "", ""],
+    //   ["", "", "", "", "", "", "", ""],
+    //   ["", "", "", "", "", "", "", ""],
+    //   ["", "", "", "", "", "", "", ""],
+    //   ["", "", "", "", "", "", "", ""],
+    //   ["wr", "wn", "wb", "wq", "wk", "wb", "wn", "wr"],
+    // ];
+
     this.chessboard = [
-      ["rb", "nb", "bb", "qb", "kb", "bb", "nb", "rb"],
-      ["pb", "pb", "pb", "pb", "pb", "pb", "pb", "pb"],
+      ["br", "bn", "bb", "bq", "bk", "bb", "bn", "br"],
+      ["bp", "bp", "bp", "bp", "bp", "bp", "bp", "bp"],
       ["", "", "", "", "", "", "", ""],
       ["", "", "", "", "", "", "", ""],
       ["", "", "", "", "", "", "", ""],
       ["", "", "", "", "", "", "", ""],
-      ["pw", "pw", "pw", "pw", "pw", "pw", "pw", "pw"],
-      ["rw", "nw", "bw", "qw", "kw", "bw", "nw", "rw"],
+      ["wp", "wp", "wp", "wp", "wp", "wp", "wp", "wp"],
+      ["wr", "wn", "wb", "wq", "wk", "wb", "wn", "wr"],
     ];
 
     this.coordinates = {};
@@ -35,10 +46,10 @@ class ChessLogic {
   }
 
   movePiece(source: string, destination: string) {
-    const sourceRow = 8 - parseInt(source[1], 10); // Convert chess notation to row index
     const sourceCol = source.charCodeAt(0) - 97; // Convert chess notation to column index
-    const destinationRow = 8 - parseInt(destination[1], 10); // Convert chess notation to row index
+    const sourceRow = 8 - parseInt(source[1], 10); // Convert chess notation to row index
     const destinationCol = destination.charCodeAt(0) - 97; // Convert chess notation to column index
+    const destinationRow = 8 - parseInt(destination[1], 10); // Convert chess notation to row index
 
     const piece = this.chessboard[sourceRow][sourceCol];
 
@@ -198,9 +209,9 @@ class ChessLogic {
 
       case "q":
         if (
-          (rowDiff === 1 && colDiff === 1) ||
-          (rowDiff === 1 && colDiff === 0) ||
-          (rowDiff === 0 && colDiff === 1)
+          (rowDiff >= 1 && colDiff >= 1) ||
+          (rowDiff >= 1 && colDiff === 0) ||
+          (rowDiff === 0 && colDiff >= 1)
         ) {
           const rowDir =
             destinationRow === sourceRow
@@ -261,11 +272,11 @@ class ChessLogic {
           ((rowDiff === 1 &&
             this.chessboard[destinationRow][destinationCol] === "") || // Move one square forward
             (rowDiff === 2 &&
-              sourceRow === (color === "w" ? 6 : 1) && // Move two squares forward on the first move
+              ((sourceRow === 6 && color === "w") || // Move two squares forward for white from the initial starting position
+                (sourceRow === 1 && color === "b")) && // Move two squares forward for black from the initial starting position
               this.chessboard[destinationRow][destinationCol] === "" &&
-              this.chessboard[destinationRow + pawnDirection][
-                destinationCol
-              ] === ""))
+              this.chessboard[sourceRow + pawnDirection][destinationCol] ===
+                "")) // Empty destination square and the square in front for two squares forward
         ) {
           return true;
         }
