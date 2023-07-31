@@ -133,6 +133,3 @@ export default function Chessboard() {
     </main>
   );
 }
-
-// you changed the original coordinates in the chess logic - watch out for that
-// look at your last chatGPT question on how to troubleshoot
