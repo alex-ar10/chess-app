@@ -1,20 +1,14 @@
 class ChessLogic {
   public chessboard: string[][];
   public coordinates: { [key: string]: { color: string; pieceType: string } };
+  public turn: string;
+  public hasMoved: {
+    w: { king: boolean; queenSideRook: boolean; kingSideRook: boolean };
+    b: { king: boolean; queenSideRook: boolean; kingSideRook: boolean };
+  };
 
-  // General chessboard layout
   constructor() {
-    // this.chessboard = [
-    //   ["br", "bn", "bb", "bq", "bk", "bb", "bn", "br"],
-    //   ["bp", "bp", "bp", "bp", "bp", "bp", "bp", "bp"],
-    //   ["", "", "", "", "", "", "", ""],
-    //   ["", "", "", "", "", "", "", ""],
-    //   ["", "", "", "", "", "", "", ""],
-    //   ["", "", "", "", "", "", "", ""],
-    //   ["", "", "", "", "", "", "", ""],
-    //   ["wr", "wn", "wb", "wq", "wk", "wb", "wn", "wr"],
-    // ];
-
+    // General chessboard layout
     this.chessboard = [
       ["br", "bn", "bb", "bq", "bk", "bb", "bn", "br"],
       ["bp", "bp", "bp", "bp", "bp", "bp", "bp", "bp"],
@@ -28,6 +22,15 @@ class ChessLogic {
 
     this.coordinates = {};
     this.initializeCoordinates();
+
+    // shows who's turn it is
+    this.turn = "w";
+
+    // shows whether kings or rooks have moved for castling move
+    this.hasMoved = {
+      w: { king: false, queenSideRook: false, kingSideRook: false },
+      b: { king: false, queenSideRook: false, kingSideRook: false },
+    };
   }
 
   initializeCoordinates() {
@@ -58,6 +61,11 @@ class ChessLogic {
       return false;
     }
 
+    // Check that it's the turn of the player whose piece is being moved
+    if (piece[0] !== this.turn) {
+      return false;
+    }
+
     // Validate the move based on your chess rules (e.g., check for valid piece movement)
     if (
       !this.isValidMove(
@@ -80,6 +88,8 @@ class ChessLogic {
     const pieceType = piece[1];
     this.coordinates[destination] = { color, pieceType };
     delete this.coordinates[source];
+
+    this.turn = this.turn === "w" ? "b" : "w";
 
     return true;
   }
@@ -248,6 +258,7 @@ class ChessLogic {
           return true;
         }
         return false;
+
       case "k":
         if (
           (rowDiff === 1 && colDiff === 1) ||
@@ -257,8 +268,46 @@ class ChessLogic {
           const destinationPiece =
             this.chessboard[destinationRow][destinationCol];
           if (destinationPiece === "" || destinationPiece[0] !== color) {
+            this.hasMoved[color as "w" | "b"].king = true; // The king has moved
             return true;
           }
+        } else if (
+          rowDiff === 0 &&
+          colDiff === 2 &&
+          !this.hasMoved[color as "w" | "b"].king && // King has not moved yet
+          this.chessboard[sourceRow][sourceCol + 3] !== "" &&
+          this.chessboard[sourceRow][sourceCol + 3][1] === "r" &&
+          !this.hasMoved[color as "w" | "b"].kingSideRook && // King-side rook has not moved yet
+          this.chessboard[sourceRow][sourceCol + 1] === "" &&
+          this.chessboard[sourceRow][sourceCol + 2] === "" // Squares between king and rook are empty
+          // Also, make sure king is not in check or passing through check
+        ) {
+          this.hasMoved[color as "w" | "b"].king = true; // The king has moved
+          this.hasMoved[color as "w" | "b"].kingSideRook = true; // The rook has moved
+          // The rook moves to the square the king skipped over
+          this.chessboard[sourceRow][sourceCol + 1] =
+            this.chessboard[sourceRow][sourceCol + 3];
+          this.chessboard[sourceRow][sourceCol + 3] = "";
+          return true;
+        } else if (
+          rowDiff === 0 &&
+          colDiff === 2 &&
+          !this.hasMoved[color as "w" | "b"].king && // King has not moved yet
+          this.chessboard[sourceRow][sourceCol - 4] !== "" &&
+          this.chessboard[sourceRow][sourceCol - 4][1] === "r" &&
+          !this.hasMoved[color as "w" | "b"].queenSideRook && // Queen-side rook has not moved yet
+          this.chessboard[sourceRow][sourceCol - 1] === "" &&
+          this.chessboard[sourceRow][sourceCol - 2] === "" &&
+          this.chessboard[sourceRow][sourceCol - 3] === "" // Squares between king and rook are empty
+          // Also, make sure king is not in check or passing through check
+        ) {
+          this.hasMoved[color as "w" | "b"].king = true; // The king has moved
+          this.hasMoved[color as "w" | "b"].queenSideRook = true; // The rook has moved
+          // The rook moves to the square the king skipped over
+          this.chessboard[sourceRow][sourceCol - 1] =
+            this.chessboard[sourceRow][sourceCol - 4];
+          this.chessboard[sourceRow][sourceCol - 4] = "";
+          return true;
         }
         return false;
 

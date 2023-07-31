@@ -57,6 +57,7 @@ describe("ChessLogic", () => {
 
   it("should move a bishop diagonally", () => {
     expect(chessLogic.movePiece("d2", "d3")).toBe(true);
+    expect(chessLogic.movePiece("a7", "a5")).toBe(true);
     expect(chessLogic.movePiece("c1", "e3")).toBe(true);
   });
 
@@ -116,23 +117,23 @@ describe("ChessLogic", () => {
     expect(chessLogic.movePiece("c8", "b7")).toBe(true);
 
     // // 9. O-O a6
-    // expect(chessLogic.movePiece("e1", "g1")).toBe(true);
-    // expect(chessLogic.movePiece("a7", "a6")).toBe(true);
+    expect(chessLogic.movePiece("e1", "g1")).toBe(true);
+    expect(chessLogic.movePiece("a7", "a6")).toBe(true);
 
     // // 10. e4 c5
-    // expect(chessLogic.movePiece("e3", "e4")).toBe(true);
-    // expect(chessLogic.movePiece("c6", "c5")).toBe(true);
+    expect(chessLogic.movePiece("e3", "e4")).toBe(true);
+    expect(chessLogic.movePiece("c6", "c5")).toBe(true);
 
     // // 11. d5 Qc7
-    // expect(chessLogic.movePiece("d4", "e5")).toBe(true);
-    // expect(chessLogic.movePiece("d8", "c7")).toBe(true);
+    expect(chessLogic.movePiece("d4", "e5")).toBe(true);
+    expect(chessLogic.movePiece("d8", "c7")).toBe(true);
 
     // // 12. dxe6 fxe6
-    // expect(chessLogic.movePiece("d5", "e6")).toBe(true);
-    // expect(chessLogic.movePiece("f7", "e6")).toBe(true);
+    expect(chessLogic.movePiece("d5", "e6")).toBe(true);
+    expect(chessLogic.movePiece("f7", "e6")).toBe(true);
 
     // // 13. Bc2 c4
-    // expect(chessLogic.movePiece("f1", "c2")).toBe(true);
+    expect(chessLogic.movePiece("d3", "c2")).toBe(true);
     // expect(chessLogic.movePiece("c5", "c4")).toBe(true);
 
     // // 14. Nd4 Nc5

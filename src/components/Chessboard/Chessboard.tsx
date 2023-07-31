@@ -29,7 +29,7 @@ export default function Chessboard() {
 
   // Initialize the piecePositions state with the initial coordinates from ChessLogic
   const [piecePositions, setPiecePositions] = useState(chessLogic.coordinates);
-  console.log(piecePositions);
+  console.log("piecePositions", piecePositions);
 
   const handlePieceMove = (source: string, destination: string) => {
     // Call the movePiece method from ChessLogic
@@ -45,7 +45,9 @@ export default function Chessboard() {
     switch (pieceType) {
       case "k":
         return color === "w" ? (
-          <Image src={WhiteKing} alt="White King" width={45} height={45} />
+          <>
+            <Image src={WhiteKing} alt="White King" width={45} height={45} />
+          </>
         ) : (
           <Image src={BlackKing} alt="Black King" width={45} height={45} />
         );
@@ -109,12 +111,13 @@ export default function Chessboard() {
               }}
             >
               {/* Render the chess pieces */}
-              {piecePositions[id] &&
+              {
                 // Conditional rendering based on piece type and color
                 renderPiece(
-                  piecePositions[id].color,
-                  piecePositions[id].pieceType
-                )}
+                  piecePositions[id.toLowerCase()]?.color,
+                  piecePositions[id.toLowerCase()]?.pieceType
+                )
+              }
             </div>
           );
         })}
