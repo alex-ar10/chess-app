@@ -16,7 +16,7 @@ import WhiteQueen from "@/assets/chess-pieces/WhiteQueen.svg";
 import WhiteKing from "@/assets/chess-pieces/WhiteKing.svg";
 import WhitePawn from "@/assets/chess-pieces/WhitePawn.svg";
 
-export default function Chessboard() {
+export default function ChessGame() {
   const gridSize = 8;
   const cellSize = 37;
 
