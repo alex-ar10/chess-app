@@ -125,7 +125,7 @@ describe("ChessLogic", () => {
     expect(chessLogic.movePiece("c6", "c5")).toBe(true);
 
     // // 11. d5 Qc7
-    expect(chessLogic.movePiece("d4", "e5")).toBe(true);
+    expect(chessLogic.movePiece("d4", "d5")).toBe(true);
     expect(chessLogic.movePiece("d8", "c7")).toBe(true);
 
     // // 12. dxe6 fxe6
@@ -134,94 +134,98 @@ describe("ChessLogic", () => {
 
     // // 13. Bc2 c4
     expect(chessLogic.movePiece("d3", "c2")).toBe(true);
-    // expect(chessLogic.movePiece("c5", "c4")).toBe(true);
+    expect(chessLogic.movePiece("c5", "c4")).toBe(true);
 
     // // 14. Nd4 Nc5
-    // expect(chessLogic.movePiece("b1", "d4")).toBe(true);
-    // expect(chessLogic.movePiece("d7", "c5")).toBe(true);
+    expect(chessLogic.movePiece("f3", "d4")).toBe(true);
+    expect(chessLogic.movePiece("d7", "c5")).toBe(true);
 
     // // 15. Be3 e5
-    // expect(chessLogic.movePiece("f3", "e5")).toBe(true);
-    // expect(chessLogic.movePiece("c4", "e5")).toBe(true);
+    expect(chessLogic.movePiece("c1", "e3")).toBe(true);
+    expect(chessLogic.movePiece("e6", "e5")).toBe(true);
 
     // // 16. Nf3 Be7
-    // expect(chessLogic.movePiece("d4", "f3")).toBe(true);
-    // expect(chessLogic.movePiece("f8", "e7")).toBe(true);
+    expect(chessLogic.movePiece("d4", "f3")).toBe(true);
+    expect(chessLogic.movePiece("f8", "e7")).toBe(true);
 
     // // 17. Ng5 O-O
-    // expect(chessLogic.movePiece("g5", "e7")).toBe(true);
-    // expect(chessLogic.movePiece("e8", "g8")).toBe(true);
+    expect(chessLogic.movePiece("f3", "g5")).toBe(true);
+    expect(chessLogic.movePiece("e8", "g8")).toBe(true);
 
     // // 18. Bxc5 Bxc5
-    // expect(chessLogic.movePiece("c2", "d3")).toBe(true);
-    // expect(chessLogic.movePiece("b7", "c5")).toBe(true);
+    expect(chessLogic.movePiece("e3", "c5")).toBe(true);
+    expect(chessLogic.movePiece("e7", "c5")).toBe(true);
 
     // // 19. Ne6 Qb6
-    // expect(chessLogic.movePiece("g5", "f8")).toBe(true);
-    // expect(chessLogic.movePiece("c7", "b6")).toBe(true);
+    expect(chessLogic.movePiece("g5", "e6")).toBe(true);
+    expect(chessLogic.movePiece("c7", "b6")).toBe(true);
 
     // // 20. Nxf8 Rxf8
-    // expect(chessLogic.movePiece("f8", "f8")).toBe(true);
-    // expect(chessLogic.movePiece("f7", "f8")).toBe(true);
+    expect(chessLogic.movePiece("e6", "f8")).toBe(true);
+    expect(chessLogic.movePiece("a8", "f8")).toBe(true);
 
     // // 21. Nd5 Bxd5
-    // expect(chessLogic.movePiece("d3", "d5")).toBe(true);
-    // expect(chessLogic.movePiece("d8", "d5")).toBe(true);
+    expect(chessLogic.movePiece("c3", "d5")).toBe(true);
+    expect(chessLogic.movePiece("b7", "d5")).toBe(true);
 
     // // 22. exd5 Bxf2+
-    // expect(chessLogic.movePiece("e4", "d5")).toBe(true);
-    // expect(chessLogic.movePiece("c5", "f2")).toBe(true);
+    expect(chessLogic.movePiece("e4", "d5")).toBe(true);
+    expect(chessLogic.movePiece("c5", "f2")).toBe(true);
 
     // // 23. Kh1 e4
-    // expect(chessLogic.movePiece("h1", "h1")).toBe(true);
-    // expect(chessLogic.movePiece("e7", "e4")).toBe(true);
+    expect(chessLogic.movePiece("g1", "h1")).toBe(true);
+    expect(chessLogic.movePiece("e5", "e4")).toBe(true);
 
     // // 24. Qe2 e3
-    // expect(chessLogic.movePiece("e3", "e2")).toBe(true);
-    // expect(chessLogic.movePiece("e4", "e3")).toBe(true);
+    expect(chessLogic.movePiece("d1", "e2")).toBe(true);
+    expect(chessLogic.movePiece("e4", "e3")).toBe(true);
 
     // // 25. Rfd1 Qd6
-    // expect(chessLogic.movePiece("f1", "d1")).toBe(true);
-    // expect(chessLogic.movePiece("d5", "d6")).toBe(true);
+    expect(chessLogic.movePiece("f1", "d1")).toBe(true);
+    expect(chessLogic.movePiece("b6", "d6")).toBe(true);
 
     // // 26. a4 g6
-    // expect(chessLogic.movePiece("a2", "a4")).toBe(true);
-    // expect(chessLogic.movePiece("g7", "g6")).toBe(true);
+    expect(chessLogic.movePiece("a2", "a4")).toBe(true);
+    expect(chessLogic.movePiece("g7", "g6")).toBe(true);
 
     // // 27. axb5 axb5
-    // expect(chessLogic.movePiece("a4", "b5")).toBe(true);
-    // expect(chessLogic.movePiece("a6", "b5")).toBe(true);
+    expect(chessLogic.movePiece("a4", "b5")).toBe(true);
+    expect(chessLogic.movePiece("a6", "b5")).toBe(true);
 
     // // 28. g3 Nh5
-    // expect(chessLogic.movePiece("g2", "g3")).toBe(true);
-    // expect(chessLogic.movePiece("h5", "g3")).toBe(true);
+    expect(chessLogic.movePiece("g2", "g3")).toBe(true);
+    expect(chessLogic.movePiece("f6", "h5")).toBe(true);
 
     // // 29. Qg4 Bxg3+
-    // expect(chessLogic.movePiece("g4", "g3")).toBe(true);
-    // expect(chessLogic.movePiece("f2", "g3")).toBe(true);
+    expect(chessLogic.movePiece("e2", "g4")).toBe(true);
+    expect(chessLogic.movePiece("f2", "g3")).toBe(true);
 
     // // 30. hxg3 Nxg3+
-    // expect(chessLogic.movePiece("h2", "g3")).toBe(true);
-    // expect(chessLogic.movePiece("g3", "f5")).toBe(true);
+    expect(chessLogic.movePiece("h2", "g3")).toBe(true);
+    expect(chessLogic.movePiece("h5", "g3")).toBe(true);
 
     // // 31. Kg2 Rf2+
-    // expect(chessLogic.movePiece("g1", "g2")).toBe(true);
-    // expect(chessLogic.movePiece("f5", "f2")).toBe(true);
+    expect(chessLogic.movePiece("h1", "g2")).toBe(true);
+    expect(chessLogic.movePiece("f8", "f2")).toBe(true);
 
     // // 32. Kh3 Nf5
-    // expect(chessLogic.movePiece("h3", "g3")).toBe(true);
-    // expect(chessLogic.movePiece("f2", "g3")).toBe(true);
+    expect(chessLogic.movePiece("g2", "h3")).toBe(true);
+    expect(chessLogic.movePiece("g3", "f5")).toBe(true);
 
     // // 33. Rh1 h5
-    // expect(chessLogic.movePiece("h1", "h1")).toBe(true);
-    // expect(chessLogic.movePiece("h7", "h5")).toBe(true);
+    expect(chessLogic.movePiece("d1", "h1")).toBe(true);
+    expect(chessLogic.movePiece("h7", "h5")).toBe(true);
 
     // // 34. Qxg6+ Qxg6
-    // expect(chessLogic.movePiece("g2", "g3")).toBe(true);
-    // expect(chessLogic.movePiece("g6", "g3")).toBe(true);
+    expect(chessLogic.movePiece("g4", "g6")).toBe(true);
+    expect(chessLogic.movePiece("d6", "g6")).toBe(true);
 
     // // 35. Rxg6+ Kf7
-    // expect(chessLogic.movePiece("h1", "g1")).toBe(true);
-    // expect(chessLogic.movePiece("e8", "f7")).toBe(true);
+    expect(chessLogic.movePiece("h1", "g1")).toBe(true);
+    expect(chessLogic.movePiece("g6", "g1")).toBe(true);
+
+    // // 35. xg1+ Kf7
+    expect(chessLogic.movePiece("a1", "g1")).toBe(true);
+    expect(chessLogic.movePiece("g8", "f7")).toBe(true);
   });
 });
