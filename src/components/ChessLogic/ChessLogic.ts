@@ -1,48 +1,48 @@
-import Chessboard from "./Chessboard";
-import ChessPiece from "./ChessPiece";
-import Rook from "./Pieces/Rook/Rook";
-import Knight from "./Pieces/Knight/Knight";
-import Bishop from "./Pieces/Bishop/Bishop";
-import Queen from "./Pieces/Queen/Queen";
-import King from "./Pieces/King/King";
-import Pawn from "./Pieces/Pawn/Pawn";
+// import Chessboard from "./Chessboard";
+// import ChessPiece from "./ChessPiece";
+// import Rook from "./Pieces/Rook/Rook";
+// import Knight from "./Pieces/Knight/Knight";
+// import Bishop from "./Pieces/Bishop/Bishop";
+// import Queen from "./Pieces/Queen/Queen";
+// import King from "./Pieces/King/King";
+// import Pawn from "./Pieces/Pawn/Pawn";
 
 class ChessLogic {
-  public chessboard: Chessboard;
-  public pieces: { [key: string]: ChessPiece };
-  public turn: string;
-  public hasMoved: {
-    w: { king: boolean; queenSideRook: boolean; kingSideRook: boolean };
-    b: { king: boolean; queenSideRook: boolean; kingSideRook: boolean };
-  };
+  // public chessboard: Chessboard;
+  // public pieces: { [key: string]: ChessPiece };
+  // public turn: string;
+  // public hasMoved: {
+  //   w: { king: boolean; queenSideRook: boolean; kingSideRook: boolean };
+  //   b: { king: boolean; queenSideRook: boolean; kingSideRook: boolean };
+  // };
 
-  constructor() {
-    this.chessboard = new Chessboard();
+  // constructor() {
+  //   this.chessboard = new Chessboard();
 
-    this.pieces = {
-      wr: new Rook("w", "r"),
-      wn: new Knight("w", "n"),
-      wb: new Bishop("w", "b"),
-      wq: new Queen("w", "q"),
-      wk: new King("w", "k"),
-      wp: new Pawn("w", "p"),
-      br: new Rook("b", "r"),
-      bn: new Knight("b", "n"),
-      bb: new Bishop("b", "b"),
-      bq: new Queen("b", "q"),
-      bk: new King("b", "k"),
-      bp: new Pawn("b", "p"),
-    };
+  //   this.pieces = {
+  //     wr: new Rook("w", "r"),
+  //     wn: new Knight("w", "n"),
+  //     wb: new Bishop("w", "b"),
+  //     wq: new Queen("w", "q"),
+  //     wk: new King("w", "k"),
+  //     wp: new Pawn("w", "p"),
+  //     br: new Rook("b", "r"),
+  //     bn: new Knight("b", "n"),
+  //     bb: new Bishop("b", "b"),
+  //     bq: new Queen("b", "q"),
+  //     bk: new King("b", "k"),
+  //     bp: new Pawn("b", "p"),
+  //   };
 
-    // shows who's turn it is
-    this.turn = "w";
+  //   // shows who's turn it is
+  //   this.turn = "w";
 
-    // shows whether kings or rooks have moved for castling move
-    this.hasMoved = {
-      w: { king: false, queenSideRook: false, kingSideRook: false },
-      b: { king: false, queenSideRook: false, kingSideRook: false },
-    };
-  }
+  //   // shows whether kings or rooks have moved for castling move
+  //   this.hasMoved = {
+  //     w: { king: false, queenSideRook: false, kingSideRook: false },
+  //     b: { king: false, queenSideRook: false, kingSideRook: false },
+  //   };
+  // }
 
   movePiece(source: string, destination: string) {
     const sourceCol = source.charCodeAt(0) - 97; // Convert chess notation to column index
