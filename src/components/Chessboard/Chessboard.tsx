@@ -21,7 +21,7 @@ export default function Chessboard() {
   const cellSize = 37;
 
   // Initialize the ChessLogic instance
-  const chessLogic: ChessLogic = new ChessLogic();
+  const [chessLogic] = useState(new ChessLogic());
 
   // Use state to store the current state of the chessboard
   const [chessboardState, setChessboardState] = useState(chessLogic.chessboard);
@@ -31,6 +31,24 @@ export default function Chessboard() {
   const [piecePositions, setPiecePositions] = useState(chessLogic.coordinates);
   console.log("piecePositions", piecePositions);
 
+  const [selectedPiece, setSelectedPiece] = useState<string | null>(null);
+
+  const handlePieceClick = (id: string) => {
+    // If a piece is already selected
+    if (selectedPiece) {
+      // Try to move the selected piece to the clicked square
+      const isMoveValid = handlePieceMove(selectedPiece, id);
+
+      // If the move was valid, deselect the piece
+      if (isMoveValid) {
+        setSelectedPiece(null);
+      }
+    } else {
+      // If no piece is selected, select the clicked piece
+      setSelectedPiece(id);
+    }
+  };
+
   const handlePieceMove = (source: string, destination: string) => {
     // Call the movePiece method from ChessLogic
     const isMoveValid = chessLogic.movePiece(source, destination);
@@ -38,7 +56,9 @@ export default function Chessboard() {
     // Update the chessboard state if the move is valid
     if (isMoveValid) {
       setChessboardState(chessLogic.chessboard);
+      setPiecePositions(chessLogic.coordinates);
     }
+    return isMoveValid;
   };
 
   const renderPiece = (color: string, pieceType: string) => {
@@ -91,7 +111,7 @@ export default function Chessboard() {
       <div className="top-7 left-7 absolute">
         {/* Render the chessboard squares */}
         {Array.from({ length: gridSize * gridSize }).map((_, index) => {
-          const column = String.fromCharCode(65 + (index % gridSize));
+          const column = String.fromCharCode(97 + (index % gridSize));
           const row = 8 - Math.floor(index / gridSize);
           const id = `${column}${row}`;
 
@@ -105,17 +125,16 @@ export default function Chessboard() {
                 left: `${(index % gridSize) * cellSize}px`,
               }}
               onClick={() => {
-                const source = id;
-                const destination = "A1"; // Hardcoding destination for testing purposes
-                handlePieceMove(source, destination);
+                console.log("Click?", id);
+                handlePieceClick(id);
               }}
             >
               {/* Render the chess pieces */}
               {
                 // Conditional rendering based on piece type and color
                 renderPiece(
-                  piecePositions[id.toLowerCase()]?.color,
-                  piecePositions[id.toLowerCase()]?.pieceType
+                  piecePositions[id]?.color,
+                  piecePositions[id]?.pieceType
                 )
               }
             </div>
