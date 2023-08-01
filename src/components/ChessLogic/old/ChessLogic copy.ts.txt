@@ -8,20 +8,20 @@ class ChessLogic {
   };
 
   constructor() {
-    // // General chessboard layout
-    // this.chessboard = [
-    //   ["br", "bn", "bb", "bq", "bk", "bb", "bn", "br"],
-    //   ["bp", "bp", "bp", "bp", "bp", "bp", "bp", "bp"],
-    //   ["", "", "", "", "", "", "", ""],
-    //   ["", "", "", "", "", "", "", ""],
-    //   ["", "", "", "", "", "", "", ""],
-    //   ["", "", "", "", "", "", "", ""],
-    //   ["wp", "wp", "wp", "wp", "wp", "wp", "wp", "wp"],
-    //   ["wr", "wn", "wb", "wq", "wk", "wb", "wn", "wr"],
-    // ];
+    // General chessboard layout
+    this.chessboard = [
+      ["br", "bn", "bb", "bq", "bk", "bb", "bn", "br"],
+      ["bp", "bp", "bp", "bp", "bp", "bp", "bp", "bp"],
+      ["", "", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", "", ""],
+      ["wp", "wp", "wp", "wp", "wp", "wp", "wp", "wp"],
+      ["wr", "wn", "wb", "wq", "wk", "wb", "wn", "wr"],
+    ];
 
-    // this.coordinates = {};
-    // this.initializeCoordinates();
+    this.coordinates = {};
+    this.initializeCoordinates();
 
     // shows who's turn it is
     this.turn = "w";
@@ -33,66 +33,66 @@ class ChessLogic {
     };
   }
 
-  // initializeCoordinates() {
-  //   for (let row = 0; row < this.chessboard.length; row++) {
-  //     for (let column = 0; column < this.chessboard.length; column++) {
-  //       const piece = this.chessboard[row][column];
-  //       if (piece !== "") {
-  //         const color = piece[0];
-  //         const pieceType = piece[1];
+  initializeCoordinates() {
+    for (let row = 0; row < this.chessboard.length; row++) {
+      for (let column = 0; column < this.chessboard.length; column++) {
+        const piece = this.chessboard[row][column];
+        if (piece !== "") {
+          const color = piece[0];
+          const pieceType = piece[1];
 
-  //         const chessNotation = String.fromCharCode(97 + column) + (8 - row);
-  //         this.coordinates[chessNotation] = { color, pieceType };
-  //       }
-  //     }
-  //   }
-  // }
+          const chessNotation = String.fromCharCode(97 + column) + (8 - row);
+          this.coordinates[chessNotation] = { color, pieceType };
+        }
+      }
+    }
+  }
 
-  // movePiece(source: string, destination: string) {
-  //   const sourceCol = source.charCodeAt(0) - 97; // Convert chess notation to column index
-  //   const sourceRow = 8 - parseInt(source[1], 10); // Convert chess notation to row index
-  //   const destinationCol = destination.charCodeAt(0) - 97; // Convert chess notation to column index
-  //   const destinationRow = 8 - parseInt(destination[1], 10); // Convert chess notation to row index
+  movePiece(source: string, destination: string) {
+    const sourceCol = source.charCodeAt(0) - 97; // Convert chess notation to column index
+    const sourceRow = 8 - parseInt(source[1], 10); // Convert chess notation to row index
+    const destinationCol = destination.charCodeAt(0) - 97; // Convert chess notation to column index
+    const destinationRow = 8 - parseInt(destination[1], 10); // Convert chess notation to row index
 
-  //   const piece = this.chessboard[sourceRow][sourceCol];
+    const piece = this.chessboard[sourceRow][sourceCol];
 
-  //   if (!piece || piece === "") {
-  //     // No piece at the source coordinates
-  //     return false;
-  //   }
+    if (!piece || piece === "") {
+      // No piece at the source coordinates
+      return false;
+    }
 
-  //   // Check that it's the turn of the player whose piece is being moved
-  //   if (piece[0] !== this.turn) {
-  //     return false;
-  //   }
+    // Check that it's the turn of the player whose piece is being moved
+    if (piece[0] !== this.turn) {
+      return false;
+    }
 
-  //   // Validate the move based on your chess rules (e.g., check for valid piece movement)
-  //   if (
-  //     !this.isValidMove(
-  //       piece,
-  //       sourceRow,
-  //       sourceCol,
-  //       destinationRow,
-  //       destinationCol
-  //     )
-  //   ) {
-  //     return false;
-  //   }
+    // Validate the move based on your chess rules (e.g., check for valid piece movement)
+    if (
+      !this.isValidMove(
+        piece,
+        sourceRow,
+        sourceCol,
+        destinationRow,
+        destinationCol
+      )
+    ) {
+      return false;
+    }
 
-  //   // Perform the move
-  //   this.chessboard[destinationRow][destinationCol] = piece;
-  //   this.chessboard[sourceRow][sourceCol] = "";
+    // Perform the move
+    this.chessboard[destinationRow][destinationCol] = piece;
+    this.chessboard[sourceRow][sourceCol] = "";
 
-  //   // Update the coordinates object with the new position
-  //   const color = piece[0];
-  //   const pieceType = piece[1];
-  //   this.coordinates[destination] = { color, pieceType };
-  //   delete this.coordinates[source];
+    // Update the coordinates object with the new position
+    const color = piece[0];
+    const pieceType = piece[1];
+    this.coordinates[destination] = { color, pieceType };
+    delete this.coordinates[source];
 
-  //   this.turn = this.turn === "w" ? "b" : "w";
+    this.turn = this.turn === "w" ? "b" : "w";
 
-  //   return true;
-  // }
+    return true;
+  }
 
   isValidMove(
     piece: string,

@@ -6,13 +6,12 @@ class King extends ChessPiece {
     sourceCol: number,
     destinationRow: number,
     destinationCol: number,
-    chessboard: string[][],
-    hasMoved: {
-      w: { king: boolean; queenSideRook: boolean; kingSideRook: boolean };
-      b: { king: boolean; queenSideRook: boolean; kingSideRook: boolean };
-    }
+    chessboard: string[][]
   ): boolean {
-
+    const hasMoved = {
+      w: { king: false, queenSideRook: false, kingSideRook: false },
+      b: { king: false, queenSideRook: false, kingSideRook: false },
+    };
     // Check if the destination coordinates are within the chessboard boundaries
     if (
       destinationRow < 0 ||

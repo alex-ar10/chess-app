@@ -14,11 +14,7 @@ class ChessPiece {
     sourceCol: number,
     destinationRow: number,
     destinationCol: number,
-    chessboard: string[][],
-    hasMoved: {
-      w: { king: boolean; queenSideRook: boolean; kingSideRook: boolean };
-      b: { king: boolean; queenSideRook: boolean; kingSideRook: boolean };
-    }
+    chessboard: string[][]
   ): boolean {
     return false;
   }

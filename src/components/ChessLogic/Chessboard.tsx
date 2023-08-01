@@ -9,12 +9,8 @@ import Pawn from "./Pieces/Pawn/Pawn";
 class Chessboard {
   public chessboard: string[][];
   public coordinates: { [key: string]: { color: string; pieceType: string } };
-  public pieces: { [key: string]: ChessPiece }; 
+  public pieces: { [key: string]: ChessPiece };
   public turn: string;
-  public hasMoved: {
-    w: { king: boolean; queenSideRook: boolean; kingSideRook: boolean };
-    b: { king: boolean; queenSideRook: boolean; kingSideRook: boolean };
-  };
 
   constructor() {
     this.chessboard = [
@@ -24,7 +20,7 @@ class Chessboard {
       ["", "", "", "", "", "", "", ""],
       ["", "", "", "", "", "", "", ""],
       ["", "", "", "", "", "", "", ""],
-      ["wp", "wp", "wp", "wp", "", "wp", "wp", "wp"],
+      ["wp", "wp", "wp", "wp", "wp", "wp", "wp", "wp"],
       ["wr", "wn", "wb", "wq", "wk", "wb", "wn", "wr"],
     ];
 
@@ -66,12 +62,6 @@ class Chessboard {
     // shows who's turn it is
     this.turn = "w";
 
-    // shows whether kings or rooks have moved for castling move
-    this.hasMoved = {
-      w: { king: false, queenSideRook: false, kingSideRook: false },
-      b: { king: false, queenSideRook: false, kingSideRook: false },
-    };
-
     // initialize Pieces directly in array with "new"
     // reset chessboard durch initializen
 
@@ -94,44 +84,51 @@ class Chessboard {
     }
   }
 
-
   movePiece(source: string, destination: string): boolean {
     const sourcePiece = this.pieces[source];
     if (!sourcePiece || sourcePiece.color !== this.turn) {
       return false;
     }
-  
+
     // Convert source and destination from chess notation to coordinates
     const sourceRow = 8 - parseInt(source[1]);
     const sourceCol = source.charCodeAt(0) - 97;
     const destinationRow = 8 - parseInt(destination[1]);
     const destinationCol = destination.charCodeAt(0) - 97;
-  
-    if (!sourcePiece.isValidMove(sourceRow, sourceCol, destinationRow, destinationCol, this.chessboard, this.hasMoved)) {
+
+    if (
+      !sourcePiece.isValidMove(
+        sourceRow,
+        sourceCol,
+        destinationRow,
+        destinationCol,
+        this.chessboard
+      )
+    ) {
       return false;
     }
-  
+
     // Move the piece and update the chessboard and pieces object
     const destinationPiece = this.chessboard[destinationRow][destinationCol];
     if (destinationPiece !== "") {
       delete this.pieces[destination];
     }
-    this.chessboard[destinationRow][destinationCol] = this.chessboard[sourceRow][sourceCol];
+    this.chessboard[destinationRow][destinationCol] =
+      this.chessboard[sourceRow][sourceCol];
     this.chessboard[sourceRow][sourceCol] = "";
     sourcePiece.position = destination;
     this.pieces[destination] = sourcePiece;
     delete this.pieces[source];
-  
+
     this.turn = this.turn === "w" ? "b" : "w";
-  
+
     return true;
   }
-  
+
   // Update the getPieceAtPosition method
   getPieceAtPosition(position: string): ChessPiece | undefined {
     return this.pieces[position];
   }
-
 }
 
 export default Chessboard;
