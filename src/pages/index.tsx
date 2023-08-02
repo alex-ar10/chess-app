@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import Header from "@/components/Header/Header";
-import Chessboard from "@/components/Chessboard/ChessGame";
+import Chessboard from "@/components/ChessGame/ChessGame";
 import Navigation from "@/components/Navigation/Navigation";
 
 const inter = Inter({ subsets: ["latin"] });

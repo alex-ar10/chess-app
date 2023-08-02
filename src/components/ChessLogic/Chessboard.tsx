@@ -84,6 +84,11 @@ class Chessboard {
     }
   }
 
+  updatePiecePositions() {
+    this.coordinates = {};
+    this.initializeCoordinates();
+  }
+
   movePiece(source: string, destination: string): boolean {
     const sourcePiece = this.pieces[source];
     if (!sourcePiece || sourcePiece.color !== this.turn) {
