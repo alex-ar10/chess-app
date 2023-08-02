@@ -6,7 +6,8 @@ class King extends ChessPiece {
     sourceCol: number,
     destinationRow: number,
     destinationCol: number,
-    chessboard: string[][]
+    chessboard: string[][],
+    pieces: { [key: string]: ChessPiece }
   ): boolean {
     const hasMoved = {
       w: { king: false, queenSideRook: false, kingSideRook: false },
@@ -63,6 +64,15 @@ class King extends ChessPiece {
       chessboard[sourceRow][sourceCol + 1] =
         chessboard[sourceRow][sourceCol + 3];
       chessboard[sourceRow][sourceCol + 3] = "";
+
+      let oldRookPosition =
+        String.fromCharCode(97 + sourceCol + 3) + (8 - sourceRow);
+      let newRookPosition =
+        String.fromCharCode(97 + sourceCol + 1) + (8 - sourceRow);
+      let rook = pieces[oldRookPosition];
+      rook.position = newRookPosition;
+      pieces[newRookPosition] = rook;
+      delete pieces[oldRookPosition];
       return true;
     } else if (
       rowDiff === 0 &&
@@ -82,6 +92,15 @@ class King extends ChessPiece {
       chessboard[sourceRow][sourceCol - 1] =
         chessboard[sourceRow][sourceCol - 4];
       chessboard[sourceRow][sourceCol - 4] = "";
+
+      let oldRookPosition =
+        String.fromCharCode(97 + sourceCol - 4) + (8 - sourceRow);
+      let newRookPosition =
+        String.fromCharCode(97 + sourceCol - 1) + (8 - sourceRow);
+      let rook = pieces[oldRookPosition];
+      rook.position = newRookPosition;
+      pieces[newRookPosition] = rook;
+      delete pieces[oldRookPosition];
       return true;
     }
     return false;

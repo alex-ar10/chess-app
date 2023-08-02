@@ -102,7 +102,8 @@ class Chessboard {
         sourceCol,
         destinationRow,
         destinationCol,
-        this.chessboard
+        this.chessboard,
+        this.pieces
       )
     ) {
       return false;
@@ -132,3 +133,5 @@ class Chessboard {
 }
 
 export default Chessboard;
+
+// pass up hasMoved to Chessboard so it's available globally for checking if castling is possible

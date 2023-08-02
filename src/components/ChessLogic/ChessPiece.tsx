@@ -14,7 +14,8 @@ class ChessPiece {
     sourceCol: number,
     destinationRow: number,
     destinationCol: number,
-    chessboard: string[][]
+    chessboard: string[][],
+    pieces: { [key: string]: ChessPiece }
   ): boolean {
     return false;
   }
