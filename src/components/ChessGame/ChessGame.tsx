@@ -35,16 +35,27 @@ export default function ChessGame() {
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  const [currentPlayer, setCurrentPlayer] = useState<"w" | "b">("w");
+
   const handlePieceClick = (id: string) => {
+    // Check if the piece belongs to the current player's turn
+    const pieceColor = piecePositions[id]?.color;
+    console.log(pieceColor);
+    if (pieceColor !== currentPlayer) {
+      setErrorMessage("It's not your turn! Please select a valid piece.");
+      return;
+    }
+
     // If a piece is already selected
     if (selectedPiece) {
       // Try to move the selected piece to the clicked square
       const isMoveValid = handlePieceMove(selectedPiece, id);
 
-      // If the move was valid, deselect the piece
+      // If the move was valid, deselect the piece and change the current player's turn
       if (isMoveValid) {
         setSelectedPiece(null);
         setErrorMessage(null); // Clear any previous error messages on a successful move
+        setCurrentPlayer(currentPlayer === "w" ? "b" : "w"); // Change the current player's turn
       }
     } else {
       // If no piece is selected, select the clicked piece
