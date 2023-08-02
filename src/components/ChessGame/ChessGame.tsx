@@ -33,6 +33,8 @@ export default function ChessGame() {
 
   const [selectedPiece, setSelectedPiece] = useState<string | null>(null);
 
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const handlePieceClick = (id: string) => {
     // If a piece is already selected
     if (selectedPiece) {
@@ -42,6 +44,7 @@ export default function ChessGame() {
       // If the move was valid, deselect the piece
       if (isMoveValid) {
         setSelectedPiece(null);
+        setErrorMessage(null); // Clear any previous error messages on a successful move
       }
     } else {
       // If no piece is selected, select the clicked piece
@@ -58,6 +61,9 @@ export default function ChessGame() {
       setChessboardState(chessLogic.chessboard);
       chessLogic.updatePiecePositions();
       setPiecePositions(chessLogic.coordinates);
+    } else {
+      // Show error message if the move is invalid
+      setErrorMessage("Invalid move! Please try again.");
     }
     return isMoveValid;
   };
@@ -150,6 +156,7 @@ export default function ChessGame() {
         height={351}
         className="pointer-events-none opacity-20"
       />
+      <div className="text-red-500">{errorMessage}</div>
     </main>
   );
 }
