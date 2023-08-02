@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import chessboard from "@/assets/chessboard.svg";
-import ChessLogic from "../ChessLogic/ChessLogic";
+import Chessboard from "../ChessLogic/Chessboard";
 
 import BlackRook from "@/assets/chess-pieces/BlackRook.svg";
 import BlackKnight from "@/assets/chess-pieces/BlackKnight.svg";
@@ -21,7 +21,7 @@ export default function ChessGame() {
   const cellSize = 37;
 
   // Initialize the ChessLogic instance
-  const [chessLogic] = useState(new ChessLogic());
+  const [chessLogic] = useState(new Chessboard());
 
   // Use state to store the current state of the chessboard
   const [chessboardState, setChessboardState] = useState(chessLogic.chessboard);
@@ -56,6 +56,7 @@ export default function ChessGame() {
     // Update the chessboard state if the move is valid
     if (isMoveValid) {
       setChessboardState(chessLogic.chessboard);
+      chessLogic.updatePiecePositions();
       setPiecePositions(chessLogic.coordinates);
     }
     return isMoveValid;
