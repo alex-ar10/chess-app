@@ -1,3 +1,4 @@
+import { PlayerColor } from "../type";
 import { useState } from "react";
 import Image from "next/image";
 import chessboard from "@/assets/chessboard.svg";
@@ -35,13 +36,15 @@ export default function ChessGame() {
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const [currentPlayer, setCurrentPlayer] = useState<"w" | "b">("w");
-
   const handlePieceClick = (id: string) => {
     // Check if the piece belongs to the current player's turn
+    const player: PlayerColor = chessLogic.turn;
+    console.log("player:", player);
+
     const pieceColor = piecePositions[id]?.color;
-    console.log(pieceColor);
-    if (pieceColor !== currentPlayer) {
+    console.log("pieceColor:", pieceColor);
+    console.log("selected Piece", selectedPiece);
+    if (selectedPiece === null && pieceColor !== player) {
       setErrorMessage("It's not your turn! Please select a valid piece.");
       return;
     }
@@ -55,7 +58,7 @@ export default function ChessGame() {
       if (isMoveValid) {
         setSelectedPiece(null);
         setErrorMessage(null); // Clear any previous error messages on a successful move
-        setCurrentPlayer(currentPlayer === "w" ? "b" : "w"); // Change the current player's turn
+        chessLogic.turn = player === "w" ? "b" : "w"; // Change the current player's turn in the Chessboard instance
       }
     } else {
       // If no piece is selected, select the clicked piece
@@ -75,6 +78,7 @@ export default function ChessGame() {
     } else {
       // Show error message if the move is invalid
       setErrorMessage("Invalid move! Please try again.");
+      setSelectedPiece(null);
     }
     return isMoveValid;
   };
@@ -137,7 +141,9 @@ export default function ChessGame() {
             <div
               key={index}
               id={id}
-              className="absolute w-37px h-37px border-2 border-black"
+              className={`absolute w-37px h-37px ${
+                selectedPiece === id ? "bg-slate-400" : ""
+              }`}
               style={{
                 top: `${Math.floor(index / gridSize) * cellSize}px`,
                 left: `${(index % gridSize) * cellSize}px`,
@@ -165,7 +171,7 @@ export default function ChessGame() {
         alt="Chessboard"
         width={351}
         height={351}
-        className="pointer-events-none opacity-20"
+        className="pointer-events-none"
       />
       <div className="text-red-500">{errorMessage}</div>
     </main>

@@ -1,3 +1,4 @@
+import { PlayerColor } from "../type";
 import ChessPiece from "./ChessPiece";
 import Rook from "./Pieces/Rook/Rook";
 import Knight from "./Pieces/Knight/Knight";
@@ -10,7 +11,7 @@ class Chessboard {
   public chessboard: string[][];
   public coordinates: { [key: string]: { color: string; pieceType: string } };
   public pieces: { [key: string]: ChessPiece };
-  public turn: string;
+  public turn: PlayerColor;
 
   constructor() {
     this.chessboard = [
