@@ -1,3 +1,4 @@
+import { cloneDeep } from "lodash";
 import { PlayerColor } from "../type";
 import ChessPiece from "./ChessPiece";
 import Rook from "./Pieces/Rook/Rook";
@@ -90,8 +91,13 @@ class Chessboard {
     this.initializeCoordinates();
   }
 
-  movePiece(source: string, destination: string): boolean {
-    const sourcePiece = this.pieces[source];
+  movePiece(
+    source: string,
+    destination: string,
+    chessboard = this.chessboard,
+    pieces = this.pieces
+  ): boolean {
+    const sourcePiece = pieces[source];
     if (!sourcePiece || sourcePiece.color !== this.turn) {
       return false;
     }
@@ -108,24 +114,24 @@ class Chessboard {
         sourceCol,
         destinationRow,
         destinationCol,
-        this.chessboard,
-        this.pieces
+        chessboard,
+        pieces
       )
     ) {
       return false;
     }
 
     // Move the piece and update the chessboard and pieces object
-    const destinationPiece = this.chessboard[destinationRow][destinationCol];
+    const destinationPiece = chessboard[destinationRow][destinationCol];
     if (destinationPiece !== "") {
-      delete this.pieces[destination];
+      delete pieces[destination];
     }
-    this.chessboard[destinationRow][destinationCol] =
-      this.chessboard[sourceRow][sourceCol];
-    this.chessboard[sourceRow][sourceCol] = "";
+    chessboard[destinationRow][destinationCol] =
+      chessboard[sourceRow][sourceCol];
+    chessboard[sourceRow][sourceCol] = "";
     sourcePiece.position = destination;
-    this.pieces[destination] = sourcePiece;
-    delete this.pieces[source];
+    pieces[destination] = sourcePiece;
+    delete pieces[source];
 
     // Check if the pawn has reached the opponent's end of the board
     if (
@@ -135,13 +141,51 @@ class Chessboard {
     ) {
       // Promote the pawn to a queen
       const promotedQueen = new Queen(sourcePiece.color, "q", destination);
-      this.pieces[destination] = promotedQueen;
-      this.chessboard[destinationRow][destinationCol] = sourcePiece.color + "q";
+      pieces[destination] = promotedQueen;
+      chessboard[destinationRow][destinationCol] = sourcePiece.color + "q";
     }
 
     this.turn = this.turn === "w" ? "b" : "w";
 
+    // Check if the king of the next player is in check
+    if (this.isKingInCheck(this.turn)) {
+      console.log(`King of player ${this.turn} is in check!`);
+      // Handle the check situation as needed
+    }
+
     return true;
+  }
+
+  isKingInCheck(playerColor: PlayerColor): boolean {
+    // Get the king's position
+    let kingPosition: string = "";
+    for (let position in this.pieces) {
+      if (
+        this.pieces[position].type === "k" &&
+        this.pieces[position].color === playerColor
+      ) {
+        kingPosition = position;
+        break;
+      }
+    }
+
+    // Clone the board and pieces
+    const cloneBoard = cloneDeep(this.chessboard);
+    const clonePieces = cloneDeep(this.pieces);
+    console.log({ cloneBoard });
+    // Check all of the opponent's pieces to see if they can move to the king's position
+    for (let position in clonePieces) {
+      if (clonePieces[position].color !== playerColor) {
+        // Try to move the piece to the king's position
+        if (this.movePiece(position, kingPosition, cloneBoard, clonePieces)) {
+          // If the move was valid, the king is in check
+          return true;
+        }
+      }
+    }
+
+    // If none of the opponent's pieces can move to the king's position, the king is not in check
+    return false;
   }
 
   // Update the getPieceAtPosition method

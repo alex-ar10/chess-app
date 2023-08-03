@@ -34,6 +34,13 @@ export default function ChessGame() {
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // const handleCheckingErrors = () => {
+  //   if (chessLogic.isKingInCheck === true) {
+  //     setErrorMessage("You're in check!");
+  //     return;
+  //   }
+  // };
+
   const handlePieceClick = (id: string) => {
     // Check if the piece belongs to the current player's turn
     const player: PlayerColor = chessLogic.turn;
