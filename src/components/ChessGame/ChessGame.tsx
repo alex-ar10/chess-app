@@ -27,10 +27,8 @@ export default function ChessGame() {
   // Use state to store the current state of the chessboard
   const [chessboardState, setChessboardState] = useState(chessLogic.chessboard);
   console.log(chessboardState);
-
   // Initialize the piecePositions state with the initial coordinates from ChessLogic
   const [piecePositions, setPiecePositions] = useState(chessLogic.coordinates);
-  console.log("piecePositions", piecePositions);
 
   const [selectedPiece, setSelectedPiece] = useState<string | null>(null);
 
@@ -39,11 +37,8 @@ export default function ChessGame() {
   const handlePieceClick = (id: string) => {
     // Check if the piece belongs to the current player's turn
     const player: PlayerColor = chessLogic.turn;
-    console.log("player:", player);
 
     const pieceColor = piecePositions[id]?.color;
-    console.log("pieceColor:", pieceColor);
-    console.log("selected Piece", selectedPiece);
     if (selectedPiece === null && pieceColor !== player) {
       setErrorMessage("It's not your turn! Please select a valid piece.");
       return;
@@ -149,7 +144,6 @@ export default function ChessGame() {
                 left: `${(index % gridSize) * cellSize}px`,
               }}
               onClick={() => {
-                console.log("Click?", id);
                 handlePieceClick(id);
               }}
             >
