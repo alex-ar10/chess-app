@@ -1,3 +1,4 @@
+import { PlayerColor } from "../type";
 import ChessPiece from "./ChessPiece";
 import Rook from "./Pieces/Rook/Rook";
 import Knight from "./Pieces/Knight/Knight";
@@ -10,7 +11,7 @@ class Chessboard {
   public chessboard: string[][];
   public coordinates: { [key: string]: { color: string; pieceType: string } };
   public pieces: { [key: string]: ChessPiece };
-  public turn: string;
+  public turn: PlayerColor;
 
   constructor() {
     this.chessboard = [
@@ -125,6 +126,18 @@ class Chessboard {
     sourcePiece.position = destination;
     this.pieces[destination] = sourcePiece;
     delete this.pieces[source];
+
+    // Check if the pawn has reached the opponent's end of the board
+    if (
+      sourcePiece.type === "p" &&
+      ((sourcePiece.color === "w" && destinationRow === 0) ||
+        (sourcePiece.color === "b" && destinationRow === 7))
+    ) {
+      // Promote the pawn to a queen
+      const promotedQueen = new Queen(sourcePiece.color, "q", destination);
+      this.pieces[destination] = promotedQueen;
+      this.chessboard[destinationRow][destinationCol] = sourcePiece.color + "q";
+    }
 
     this.turn = this.turn === "w" ? "b" : "w";
 

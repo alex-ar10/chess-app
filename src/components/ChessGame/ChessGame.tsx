@@ -1,3 +1,4 @@
+import { PlayerColor } from "../type";
 import { useState } from "react";
 import Image from "next/image";
 import chessboard from "@/assets/chessboard.svg";
@@ -26,25 +27,33 @@ export default function ChessGame() {
   // Use state to store the current state of the chessboard
   const [chessboardState, setChessboardState] = useState(chessLogic.chessboard);
   console.log(chessboardState);
-
   // Initialize the piecePositions state with the initial coordinates from ChessLogic
   const [piecePositions, setPiecePositions] = useState(chessLogic.coordinates);
-  console.log("piecePositions", piecePositions);
 
   const [selectedPiece, setSelectedPiece] = useState<string | null>(null);
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handlePieceClick = (id: string) => {
+    // Check if the piece belongs to the current player's turn
+    const player: PlayerColor = chessLogic.turn;
+
+    const pieceColor = piecePositions[id]?.color;
+    if (selectedPiece === null && pieceColor !== player) {
+      setErrorMessage("It's not your turn! Please select a valid piece.");
+      return;
+    }
+
     // If a piece is already selected
     if (selectedPiece) {
       // Try to move the selected piece to the clicked square
       const isMoveValid = handlePieceMove(selectedPiece, id);
 
-      // If the move was valid, deselect the piece
+      // If the move was valid, deselect the piece and change the current player's turn
       if (isMoveValid) {
         setSelectedPiece(null);
         setErrorMessage(null); // Clear any previous error messages on a successful move
+        chessLogic.turn = player === "w" ? "b" : "w"; // Change the current player's turn in the Chessboard instance
       }
     } else {
       // If no piece is selected, select the clicked piece
@@ -64,6 +73,7 @@ export default function ChessGame() {
     } else {
       // Show error message if the move is invalid
       setErrorMessage("Invalid move! Please try again.");
+      setSelectedPiece(null);
     }
     return isMoveValid;
   };
@@ -126,13 +136,14 @@ export default function ChessGame() {
             <div
               key={index}
               id={id}
-              className="absolute w-37px h-37px border-2 border-black"
+              className={`absolute w-37px h-37px ${
+                selectedPiece === id ? "bg-slate-400" : ""
+              }`}
               style={{
                 top: `${Math.floor(index / gridSize) * cellSize}px`,
                 left: `${(index % gridSize) * cellSize}px`,
               }}
               onClick={() => {
-                console.log("Click?", id);
                 handlePieceClick(id);
               }}
             >
@@ -154,7 +165,7 @@ export default function ChessGame() {
         alt="Chessboard"
         width={351}
         height={351}
-        className="pointer-events-none opacity-20"
+        className="pointer-events-none"
       />
       <div className="text-red-500">{errorMessage}</div>
     </main>
