@@ -26,7 +26,6 @@ export default function ChessGame() {
 
   // Use state to store the current state of the chessboard
   const [chessboardState, setChessboardState] = useState(chessLogic.chessboard);
-  console.log(chessboardState);
   // Initialize the piecePositions state with the initial coordinates from ChessLogic
   const [piecePositions, setPiecePositions] = useState(chessLogic.coordinates);
 

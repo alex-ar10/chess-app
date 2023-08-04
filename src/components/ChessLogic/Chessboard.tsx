@@ -17,8 +17,8 @@ class Chessboard {
   constructor() {
     this.chessboard = [
       ["br", "bn", "bb", "bq", "bk", "bb", "bn", "br"],
-      ["bp", "bp", "bp", "bp", "bp", "bp", "bp", "bp"],
-      ["", "", "", "", "", "", "", ""],
+      ["bp", "bp", "bp", "bp", "bp", "", "bp", "bp"],
+      ["", "", "", "", "", "wq", "", ""],
       ["", "", "", "", "", "", "", ""],
       ["", "", "", "", "", "", "", ""],
       ["", "", "", "", "", "", "", ""],
@@ -59,6 +59,7 @@ class Chessboard {
       f7: new Pawn("b", "p", "f7"),
       g7: new Pawn("b", "p", "g7"),
       h7: new Pawn("b", "p", "h7"),
+      f6: new Queen("w", "q", "f6"),
     };
 
     // shows who's turn it is
@@ -95,7 +96,8 @@ class Chessboard {
     source: string,
     destination: string,
     chessboard = this.chessboard,
-    pieces = this.pieces
+    pieces = this.pieces,
+    checkForCheck = true
   ): boolean {
     const sourcePiece = pieces[source];
     if (!sourcePiece || sourcePiece.color !== this.turn) {
@@ -123,6 +125,9 @@ class Chessboard {
 
     // Move the piece and update the chessboard and pieces object
     const destinationPiece = chessboard[destinationRow][destinationCol];
+    if (checkForCheck && ["bk", "wk"].includes(destinationPiece)) {
+      return false;
+    }
     if (destinationPiece !== "") {
       delete pieces[destination];
     }
@@ -133,22 +138,23 @@ class Chessboard {
     pieces[destination] = sourcePiece;
     delete pieces[source];
 
-    // Check if the pawn has reached the opponent's end of the board
     if (
       sourcePiece.type === "p" &&
       ((sourcePiece.color === "w" && destinationRow === 0) ||
         (sourcePiece.color === "b" && destinationRow === 7))
     ) {
+      // Check if the pawn has reached the opponent's end of the board
       // Promote the pawn to a queen
       const promotedQueen = new Queen(sourcePiece.color, "q", destination);
       pieces[destination] = promotedQueen;
       chessboard[destinationRow][destinationCol] = sourcePiece.color + "q";
     }
 
-    this.turn = this.turn === "w" ? "b" : "w";
+    this.switchTurn();
 
     // Check if the king of the next player is in check
-    if (this.isKingInCheck(this.turn)) {
+    let nextPlayer: PlayerColor = this.turn === "w" ? "b" : "w";
+    if (checkForCheck && this.isKingInCheck(nextPlayer)) {
       console.log(`King of player ${this.turn} is in check!`);
       // Handle the check situation as needed
     }
@@ -156,29 +162,46 @@ class Chessboard {
     return true;
   }
 
-  isKingInCheck(playerColor: PlayerColor): boolean {
-    // Get the king's position
+  getKingPosition(playerColor: PlayerColor) {
     let kingPosition: string = "";
     for (let position in this.pieces) {
       if (
         this.pieces[position].type === "k" &&
-        this.pieces[position].color === playerColor
+        this.pieces[position].color !== playerColor
       ) {
         kingPosition = position;
         break;
       }
     }
+    return kingPosition;
+  }
+
+  switchTurn() {
+    this.turn = this.turn === "w" ? "b" : "w";
+  }
+
+  isKingInCheck(playerColor: PlayerColor): boolean {
+    const kingPosition = this.getKingPosition(playerColor);
 
     // Clone the board and pieces
     const cloneBoard = cloneDeep(this.chessboard);
     const clonePieces = cloneDeep(this.pieces);
-    console.log({ cloneBoard });
+    console.log("turn: ", this.turn);
     // Check all of the opponent's pieces to see if they can move to the king's position
+    this.switchTurn();
+
     for (let position in clonePieces) {
-      if (clonePieces[position].color !== playerColor) {
+      const piece = clonePieces[position];
+      if (piece.color === playerColor) {
         // Try to move the piece to the king's position
-        if (this.movePiece(position, kingPosition, cloneBoard, clonePieces)) {
+        console.log({ position, kingPosition, turn: this.turn });
+
+        if (
+          this.movePiece(position, kingPosition, cloneBoard, clonePieces, false)
+        ) {
           // If the move was valid, the king is in check
+          console.log("check");
+
           return true;
         }
       }
@@ -195,5 +218,3 @@ class Chessboard {
 }
 
 export default Chessboard;
-
-// pass up hasMoved to Chessboard so it's available globally for checking if castling is possible
