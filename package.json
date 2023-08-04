@@ -15,6 +15,7 @@
     "autoprefixer": "10.4.14",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.10",
+    "lodash": "^4.17.21",
     "next": "13.4.10",
     "postcss": "8.4.26",
     "prettier-plugin-tailwindcss": "^0.4.1",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.3",
+    "@types/lodash": "^4.14.196",
     "jest": "^29.6.2",
     "prettier": "^3.0.0",
     "ts-jest": "^29.1.1",

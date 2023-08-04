@@ -26,13 +26,19 @@ export default function ChessGame() {
 
   // Use state to store the current state of the chessboard
   const [chessboardState, setChessboardState] = useState(chessLogic.chessboard);
-  console.log(chessboardState);
   // Initialize the piecePositions state with the initial coordinates from ChessLogic
   const [piecePositions, setPiecePositions] = useState(chessLogic.coordinates);
 
   const [selectedPiece, setSelectedPiece] = useState<string | null>(null);
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // const handleCheckingErrors = () => {
+  //   if (chessLogic.isKingInCheck === true) {
+  //     setErrorMessage("You're in check!");
+  //     return;
+  //   }
+  // };
 
   const handlePieceClick = (id: string) => {
     // Check if the piece belongs to the current player's turn
