@@ -15,9 +15,6 @@ class Rook extends ChessPiece {
       destinationCol < 0 ||
       destinationCol > 7
     ) {
-      console.log(
-        "Error: The destination coordinates are outside the chessboard boundaries."
-      );
       return false;
     }
 
@@ -28,9 +25,6 @@ class Rook extends ChessPiece {
       chessboard[destinationRow][destinationCol] !== "" &&
       chessboard[destinationRow][destinationCol][0] === color
     ) {
-      console.log(
-        "Error: The destination square already has a piece of the same color."
-      );
       return false;
     }
 
@@ -54,14 +48,8 @@ class Rook extends ChessPiece {
 
         if (currentPiece !== "") {
           if (currentPiece[0] === color) {
-            console.log(
-              "Error: There is a piece of the same color in the path."
-            );
             return false;
           } else {
-            console.log(
-              "Capture: There is a piece of a different color in the path."
-            );
             break;
           }
         }
@@ -72,9 +60,6 @@ class Rook extends ChessPiece {
 
       return true;
     } else {
-      console.log(
-        "Error: The move is not horizontal or vertical, which is invalid for a rook."
-      );
       return false;
     }
   }
