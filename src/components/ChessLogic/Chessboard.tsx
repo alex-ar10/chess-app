@@ -210,6 +210,43 @@ class Chessboard {
     return false;
   }
 
+  isCheckmate(playerColor: PlayerColor): boolean {
+    // If the king is not in check, it cannot be checkmate
+    if (!this.isKingInCheck(playerColor)) {
+      return false;
+    }
+
+    // Go through all the player's pieces and try every possible move
+    for (let position in this.pieces) {
+      const piece = this.pieces[position];
+      if (piece.color === playerColor) {
+        // Go through all potential moves for this piece
+        for (let row = 0; row < 8; row++) {
+          for (let col = 0; col < 8; col++) {
+            const dest = String.fromCharCode(97 + col) + (8 - row);
+            const cloneBoard = cloneDeep(this.chessboard);
+            const clonePieces = cloneDeep(this.pieces);
+
+            // Try to move the piece
+            if (
+              this.movePiece(position, dest, cloneBoard, clonePieces, false)
+            ) {
+              // After making this move, check if the king is still in check
+              if (!this.isKingInCheck(playerColor)) {
+                // There's a legal move that can get the king out of check
+                return false;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // If we've gone through all pieces and all possible moves, and the king is still in check,
+    // it's a checkmate
+    return true;
+  }
+
   // Update the getPieceAtPosition method
   getPieceAtPosition(position: string): ChessPiece | undefined {
     return this.pieces[position];
