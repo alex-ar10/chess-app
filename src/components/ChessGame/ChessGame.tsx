@@ -33,13 +33,6 @@ export default function ChessGame() {
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // const handleCheckingErrors = () => {
-  //   if (chessLogic.isKingInCheck === true) {
-  //     setErrorMessage("You're in check!");
-  //     return;
-  //   }
-  // };
-
   const handlePieceClick = (id: string) => {
     // Check if the piece belongs to the current player's turn
     const player: PlayerColor = chessLogic.turn;
@@ -58,8 +51,14 @@ export default function ChessGame() {
       // If the move was valid, deselect the piece and change the current player's turn
       if (isMoveValid) {
         setSelectedPiece(null);
-        setErrorMessage(null); // Clear any previous error messages on a successful move
-        chessLogic.turn = player === "w" ? "b" : "w"; // Change the current player's turn in the Chessboard instance
+
+        // Check if the king of the current player is in check after the move
+        let nextPlayer: PlayerColor = chessLogic.turn === "w" ? "b" : "w";
+        if (chessLogic.isKingInCheck(nextPlayer)) {
+          setErrorMessage(`King of player ${chessLogic.turn} is in check!`);
+        } else {
+          setErrorMessage(null); // Clear any previous error messages on a successful move
+        }
       }
     } else {
       // If no piece is selected, select the clicked piece

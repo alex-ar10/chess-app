@@ -17,8 +17,8 @@ class Chessboard {
   constructor() {
     this.chessboard = [
       ["br", "bn", "bb", "bq", "bk", "bb", "bn", "br"],
-      ["bp", "bp", "bp", "bp", "bp", "", "bp", "bp"],
-      ["", "", "", "", "", "wq", "", ""],
+      ["bp", "bp", "bp", "bp", "bp", "bp", "bp", "bp"],
+      ["", "", "", "", "", "", "", ""],
       ["", "", "", "", "", "", "", ""],
       ["", "", "", "", "", "", "", ""],
       ["", "", "", "", "", "", "", ""],
@@ -59,7 +59,6 @@ class Chessboard {
       f7: new Pawn("b", "p", "f7"),
       g7: new Pawn("b", "p", "g7"),
       h7: new Pawn("b", "p", "h7"),
-      f6: new Queen("w", "q", "f6"),
     };
 
     // shows who's turn it is
