@@ -13,6 +13,7 @@ class Chessboard {
   public coordinates: { [key: string]: { color: string; pieceType: string } };
   public pieces: { [key: string]: ChessPiece };
   public turn: PlayerColor;
+  public whoIsInCheck: PlayerColor | null = null;
 
   constructor() {
     this.chessboard = [
@@ -96,10 +97,13 @@ class Chessboard {
     destination: string,
     chessboard = this.chessboard,
     pieces = this.pieces,
-    checkForCheck = true
+    checkForCheck = true,
+    makeMove = false
   ): boolean {
     const sourcePiece = pieces[source];
-    if (!sourcePiece || sourcePiece.color !== this.turn) {
+    if (!sourcePiece) return false;
+
+    if (!makeMove && sourcePiece.color !== this.turn) {
       return false;
     }
 
@@ -149,15 +153,20 @@ class Chessboard {
       chessboard[destinationRow][destinationCol] = sourcePiece.color + "q";
     }
 
-    this.switchTurn();
-
-    // Check if the king of the next player is in check
-    let nextPlayer: PlayerColor = this.turn === "w" ? "b" : "w";
-    if (checkForCheck && this.isKingInCheck(nextPlayer)) {
-      console.log(`King of player ${this.turn} is in check!`);
-      // Handle the check situation as needed
+    if (checkForCheck) {
+      this.isKingInCheck();
+      if (this.whoIsInCheck) {
+        // If opponent is in check, see if it's checkmate
+        if (this.isCheckmate()) {
+          console.log(`${this.whoIsInCheck} is in checkmate!`);
+        } else {
+          console.log(`${this.whoIsInCheck} is in check, but not checkmate.`);
+        }
+      }
     }
-
+    if (!makeMove) {
+      this.switchTurn();
+    }
     return true;
   }
 
@@ -166,7 +175,7 @@ class Chessboard {
     for (let position in this.pieces) {
       if (
         this.pieces[position].type === "k" &&
-        this.pieces[position].color !== playerColor
+        this.pieces[position].color === playerColor
       ) {
         kingPosition = position;
         break;
@@ -179,73 +188,198 @@ class Chessboard {
     this.turn = this.turn === "w" ? "b" : "w";
   }
 
-  isKingInCheck(playerColor: PlayerColor): boolean {
-    const kingPosition = this.getKingPosition(playerColor);
+  isKingInCheck(chessboard = this.chessboard, pieces = this.pieces) {
+    const originalTurn = this.turn;
 
-    // Clone the board and pieces
-    const cloneBoard = cloneDeep(this.chessboard);
-    const clonePieces = cloneDeep(this.pieces);
-    console.log("turn: ", this.turn);
-    // Check all of the opponent's pieces to see if they can move to the king's position
-    this.switchTurn();
+    console.log("Checking if a king is in check...");
 
-    for (let position in clonePieces) {
-      const piece = clonePieces[position];
-      if (piece.color === playerColor) {
-        // Try to move the piece to the king's position
-        console.log({ position, kingPosition, turn: this.turn });
+    // Get the position of both kings
+    const whiteKingPosition = this.getKingPosition("w");
+    const blackKingPosition = this.getKingPosition("b");
+    console.log(`White king is at: ${whiteKingPosition}`);
+    console.log(`Black king is at: ${blackKingPosition}`);
 
+    // Loop through all the positions
+    for (let position in pieces) {
+      const piece = pieces[position];
+
+      // Clone the chessboard and pieces for each iteration
+      const clonedChessboardCheck = cloneDeep(chessboard);
+      const clonedPiecesCheck = cloneDeep(pieces);
+
+      console.log(`Checking piece at position ${position}...`);
+
+      if (piece.color === "w") {
+        // Try to move the white piece to the black king's position
+        console.log(
+          `Trying to move white piece from ${position} to ${blackKingPosition}...`,
+          clonedChessboardCheck
+        );
         if (
-          this.movePiece(position, kingPosition, cloneBoard, clonePieces, false)
+          this.movePiece(
+            position,
+            blackKingPosition,
+            clonedChessboardCheck,
+            clonedPiecesCheck,
+            false,
+            false
+          )
         ) {
-          // If the move was valid, the king is in check
-          console.log("check");
-
+          console.log("Black king is in check!");
+          this.whoIsInCheck = "b"; // Black king is in check
+          this.turn = originalTurn;
+          return true;
+        }
+      } else {
+        // Try to move the black piece to the white king's position
+        console.log(
+          `Trying to move black piece from ${position} to ${whiteKingPosition}...`,
+          clonedChessboardCheck
+        );
+        if (
+          this.movePiece(
+            position,
+            whiteKingPosition,
+            clonedChessboardCheck,
+            clonedPiecesCheck,
+            false
+          )
+        ) {
+          console.log("White king is in check!");
+          this.whoIsInCheck = "w"; // White king is in check
+          this.turn = originalTurn;
           return true;
         }
       }
     }
 
-    // If none of the opponent's pieces can move to the king's position, the king is not in check
+    // Reset the flag if no king is in check
+    console.log("No king is in check.");
+    this.whoIsInCheck = null;
+
     return false;
   }
 
-  isCheckmate(playerColor: PlayerColor): boolean {
-    // If the king is not in check, it cannot be checkmate
-    if (!this.isKingInCheck(playerColor)) {
+  isCheckmate(): boolean {
+    const originalTurn = this.turn;
+
+    if (!this.whoIsInCheck) {
+      console.log("No player is in check. Exiting isCheckmate early.");
       return false;
     }
 
-    // Go through all the player's pieces and try every possible move
-    for (let position in this.pieces) {
-      const piece = this.pieces[position];
-      if (piece.color === playerColor) {
-        // Go through all potential moves for this piece
-        for (let row = 0; row < 8; row++) {
-          for (let col = 0; col < 8; col++) {
-            const dest = String.fromCharCode(97 + col) + (8 - row);
-            const cloneBoard = cloneDeep(this.chessboard);
-            const clonePieces = cloneDeep(this.pieces);
+    console.log(
+      `${this.whoIsInCheck} king is in check. Checking for checkmate...`
+    );
 
-            // Try to move the piece
+    // Initial clones
+    const baseChessboard = cloneDeep(this.chessboard);
+    const basePieces = cloneDeep(this.pieces);
+
+    // Go through all the player's pieces
+    for (let position in basePieces) {
+      const piece = basePieces[position];
+
+      if (piece.color !== this.whoIsInCheck) {
+        console.log(
+          `Skipping ${piece.color} piece at position ${position} because it's not the player's turn.`
+        );
+        continue;
+      }
+
+      console.log(
+        `Evaluating moves for ${piece.color} piece at position ${position}`
+      );
+
+      // Try moving this piece to every location on the chessboard
+      for (let row = 0; row < 8; row++) {
+        for (let col = 0; col < 8; col++) {
+          const potentialDestination =
+            String.fromCharCode(97 + col) + (8 - row);
+
+          // Reset the cloned board and pieces to base state for every move
+          const clonedChessboardCheckmate = cloneDeep(baseChessboard);
+          const clonedPiecesCheckmate = cloneDeep(basePieces);
+
+          if (
+            this.movePiece(
+              position,
+              potentialDestination,
+              clonedChessboardCheckmate,
+              clonedPiecesCheckmate,
+              false,
+              true
+            )
+          ) {
+            console.log(
+              `Successfully moved piece from ${position} to ${potentialDestination}. Checking if this resolves the check...`
+            );
+
+            // If this move resolves the check, it's not checkmate
             if (
-              this.movePiece(position, dest, cloneBoard, clonePieces, false)
+              !this.isKingInCheck(
+                clonedChessboardCheckmate,
+                clonedPiecesCheckmate
+              )
             ) {
-              // After making this move, check if the king is still in check
-              if (!this.isKingInCheck(playerColor)) {
-                // There's a legal move that can get the king out of check
-                return false;
-              }
+              this.turn = originalTurn;
+              console.log(
+                `Moving piece from ${position} to ${potentialDestination} resolves the check. It's not checkmate.`
+              );
+              return false;
+            } else {
+              console.log(
+                `Moving piece from ${position} to ${potentialDestination} does NOT resolve the check.`
+              );
             }
+          } else {
+            console.log(
+              `Invalid move from ${position} to ${potentialDestination}.`
+            );
           }
         }
       }
     }
+    this.turn = originalTurn;
 
-    // If we've gone through all pieces and all possible moves, and the king is still in check,
-    // it's a checkmate
+    console.log("No moves resolve the check. It's checkmate!");
     return true;
   }
+
+  // isCheckmate(playerColor: PlayerColor): boolean {
+  //   // If the king is not in check, it cannot be checkmate
+  // if (!this.whoIsInCheck) return false;
+
+  //   // Go through all the player's pieces and try every possible move
+  //   for (let position in this.pieces) {
+  //     const piece = this.pieces[position];
+  //     if (piece.color === playerColor) {
+  //       // Go through all potential moves for this piece
+  //       for (let row = 0; row < 8; row++) {
+  //         for (let col = 0; col < 8; col++) {
+  //           const dest = String.fromCharCode(97 + col) + (8 - row);
+  //           const cloneBoard = cloneDeep(this.chessboard);
+  //           const clonePieces = cloneDeep(this.pieces);
+
+  //           // Try to move the piece
+  //           if (
+  //             this.movePiece(position, dest, cloneBoard, clonePieces, false)
+  //           ) {
+  //             // After making this move, check if the king is still in check
+  //             if (!this.isKingInCheck(playerColor)) {
+  //               // There's a legal move that can get the king out of check
+  //               return false;
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+
+  //   // If we've gone through all pieces and all possible moves, and the king is still in check,
+  //   // it's a checkmate
+  //   return true;
+  // }
 
   // Update the getPieceAtPosition method
   getPieceAtPosition(position: string): ChessPiece | undefined {
@@ -254,3 +388,5 @@ class Chessboard {
 }
 
 export default Chessboard;
+
+// isKingInCheck needs cloned chessboard from isCheckmate
