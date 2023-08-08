@@ -170,12 +170,16 @@ class Chessboard {
     return true;
   }
 
-  getKingPosition(playerColor: PlayerColor) {
+  getKingPosition(
+    playerColor: PlayerColor,
+    chessboard = this.chessboard,
+    pieces = this.pieces
+  ): string {
     let kingPosition: string = "";
-    for (let position in this.pieces) {
+    for (let position in pieces) {
       if (
-        this.pieces[position].type === "k" &&
-        this.pieces[position].color === playerColor
+        pieces[position].type === "k" &&
+        pieces[position].color === playerColor
       ) {
         kingPosition = position;
         break;
@@ -193,12 +197,6 @@ class Chessboard {
 
     console.log("Checking if a king is in check...");
 
-    // Get the position of both kings
-    const whiteKingPosition = this.getKingPosition("w");
-    const blackKingPosition = this.getKingPosition("b");
-    console.log(`White king is at: ${whiteKingPosition}`);
-    console.log(`Black king is at: ${blackKingPosition}`);
-
     // Loop through all the positions
     for (let position in pieces) {
       const piece = pieces[position];
@@ -206,6 +204,17 @@ class Chessboard {
       // Clone the chessboard and pieces for each iteration
       const clonedChessboardCheck = cloneDeep(chessboard);
       const clonedPiecesCheck = cloneDeep(pieces);
+      // Get the position of both kings
+      const whiteKingPosition = this.getKingPosition(
+        "w",
+        clonedChessboardCheck,
+        clonedPiecesCheck
+      );
+      const blackKingPosition = this.getKingPosition(
+        "b",
+        clonedChessboardCheck,
+        clonedPiecesCheck
+      );
 
       console.log(`Checking piece at position ${position}...`);
 
