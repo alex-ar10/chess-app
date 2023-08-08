@@ -185,7 +185,6 @@ class Chessboard {
     pieces = this.pieces
   ): boolean {
     const kingPosition = this.getKingPosition(playerColor);
-    console.log("Checking PC whether in Check", playerColor);
 
     // Clone the board and pieces
     const cloneBoard = cloneDeep(chessboard);
@@ -219,8 +218,7 @@ class Chessboard {
       return false; // The king is not in check, so cannot be checkmate.
     }
 
-    const currentColor: PlayerColor = playerColor === "w" ? "b" : "w";
-    console.log({ currentColor });
+    const oppositeColor: PlayerColor = playerColor === "w" ? "b" : "w";
     // Clone the board and pieces to serve as "base state".
     const baseCloneBoard = cloneDeep(this.chessboard);
     const baseClonePieces = cloneDeep(this.pieces);
@@ -229,12 +227,12 @@ class Chessboard {
     for (let position in baseClonePieces) {
       const piece = baseClonePieces[position];
 
-      if (piece.color !== currentColor) {
+      if (piece.color !== oppositeColor) {
         continue; // Skip opponent's pieces.
       }
 
       console.log(
-        `Checking moves for ${currentColor} ${piece.type} at ${position}`
+        `Checking moves for ${oppositeColor} ${piece.type} at ${position}`
       ); // Displaying which piece is currently being checked.
 
       // Loop through all positions on the board.
@@ -258,13 +256,13 @@ class Chessboard {
             // After making a move, check if the king is still in check.
             if (!this.isKingInCheck(playerColor, cloneBoard, clonePieces)) {
               console.log(
-                `${currentColor} ${piece.type} from ${position} can move to ${destination} to avoid check.`,
+                `${oppositeColor} ${piece.type} from ${position} can move to ${destination} to avoid check.`,
                 cloneBoard
               ); // Logging the move that can avoid check.
               return false; // There is at least one move that can take the king out of check.
             } else {
               console.log(
-                `${currentColor} ${piece.type} from ${position} moving to ${destination} doesn't prevent check.`,
+                `${oppositeColor} ${piece.type} from ${position} moving to ${destination} doesn't prevent check.`,
                 cloneBoard
               ); // Logging the move that doesn't prevent check.
             }
