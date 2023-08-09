@@ -33,6 +33,10 @@ export default function ChessGame() {
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // Get the player in check and player in checkmate
+  const playerInCheck = chessLogic.whoIsInCheck;
+  const playerInCheckmate = chessLogic.WhoIsCheckmate;
+
   const handlePieceClick = (id: string) => {
     // Check if the piece belongs to the current player's turn
     const player: PlayerColor = chessLogic.turn;
@@ -58,43 +62,6 @@ export default function ChessGame() {
       setSelectedPiece(id);
     }
   };
-
-  // const handlePieceClick = (id: string) => {
-  //   // Check if the piece belongs to the current player's turn
-  //   const player: PlayerColor = chessLogic.turn;
-
-  //   const pieceColor = piecePositions[id]?.color;
-  //   if (selectedPiece === null && pieceColor !== player) {
-  //     setErrorMessage("It's not your turn! Please select a valid piece.");
-  //     return;
-  //   }
-
-  //   // If a piece is already selected
-  //   if (selectedPiece) {
-  //     // Try to move the selected piece to the clicked square
-  //     const isMoveValid = handlePieceMove(selectedPiece, id);
-
-  //     // If the move was valid, deselect the piece and check for checkmate
-  //     if (isMoveValid) {
-  //       setSelectedPiece(null);
-
-  //       // Check if the king of the current player is in check
-  //       if (chessLogic.isKingInCheck(player)) {
-  //         setErrorMessage(`King of player ${chessLogic.turn} is in check!`);
-
-  //         // Check for checkmate
-  //         if (chessLogic.isCheckmate(player)) {
-  //           setErrorMessage(`Checkmate! Player ${chessLogic.turn} wins!`);
-  //         }
-  //       } else {
-  //         setErrorMessage(null); // Clear any previous error messages on a successful move
-  //       }
-  //     }
-  //   } else {
-  //     // If no piece is selected, select the clicked piece
-  //     setSelectedPiece(id);
-  //   }
-  // };
 
   const handlePieceMove = (source: string, destination: string) => {
     // Call the movePiece method from ChessLogic
@@ -202,7 +169,13 @@ export default function ChessGame() {
         height={351}
         className="pointer-events-none"
       />
-      <div className="text-red-500">{errorMessage}</div>
+      <div className="text-red-500">
+        {errorMessage}{" "}
+        {playerInCheck && <div>{`${playerInCheck} is in check!`}</div>}
+        {playerInCheckmate && (
+          <div>{`${playerInCheckmate} is in checkmate!`}</div>
+        )}
+      </div>
     </main>
   );
 }
