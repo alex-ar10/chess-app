@@ -169,13 +169,15 @@ export default function ChessGame() {
         height={351}
         className="pointer-events-none"
       />
-      <div className="text-red-500">
-        {errorMessage}{" "}
-        {playerInCheck && <div>{`${playerInCheck} is in check!`}</div>}
-        {playerInCheckmate && (
-          <div>{`${playerInCheckmate} is in checkmate!`}</div>
-        )}
-      </div>
+      <section className="flex-auto items-center">
+        <div className="text-white text-center justify-center self-center">
+          {errorMessage}{" "}
+          {playerInCheck && <div>{`${playerInCheck} is in check!`}</div>}
+          {playerInCheckmate && (
+            <div>{`${playerInCheckmate} is in checkmate!`}</div>
+          )}
+        </div>
+      </section>
     </main>
   );
 }
