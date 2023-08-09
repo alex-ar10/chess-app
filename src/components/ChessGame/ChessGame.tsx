@@ -172,9 +172,15 @@ export default function ChessGame() {
       <section className="flex-auto items-center">
         <div className="text-white text-center justify-center self-center">
           {errorMessage}{" "}
-          {playerInCheck && <div>{`${playerInCheck} is in check!`}</div>}
+          {playerInCheck && (
+            <div>{`${
+              playerInCheck === "w" ? "White" : "Black"
+            } is in check!`}</div>
+          )}
           {playerInCheckmate && (
-            <div>{`${playerInCheckmate} is in checkmate!`}</div>
+            <div>{`${
+              playerInCheckmate === "w" ? "White" : "Black"
+            } is in checkmate!`}</div>
           )}
         </div>
       </section>
