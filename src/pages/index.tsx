@@ -1,7 +1,6 @@
 import { Inter } from "next/font/google";
 import Header from "@/components/Header/Header";
-import Chessboard from "@/components/ChessGame/ChessGame";
-import Navigation from "@/components/Navigation/Navigation";
+import ChessGame from "@/components/ChessGame/ChessGame";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,8 +9,7 @@ export default function Home() {
     <>
       <div className="flex flex-col justify-center items-center">
         <Header pageTitle="Queen's Quest" />
-        <Chessboard />
-        <Navigation />
+        <ChessGame />
       </div>
     </>
   );
