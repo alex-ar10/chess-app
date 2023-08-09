@@ -271,15 +271,16 @@ class Chessboard {
   }
 
   isCheckmate(): boolean {
+    const originalWhoIsInCheck = this.whoIsInCheck; // Store the original value
     const originalTurn = this.turn;
 
-    if (!this.whoIsInCheck) {
+    if (!originalWhoIsInCheck) {
       console.log("No player is in check. Exiting isCheckmate early.");
       return false;
     }
 
     console.log(
-      `${this.whoIsInCheck} king is in check. Checking for checkmate...`
+      `${originalWhoIsInCheck} king is in check. Checking for checkmate...`
     );
 
     // Initial clones
@@ -290,7 +291,7 @@ class Chessboard {
     for (let position in basePieces) {
       const piece = basePieces[position];
 
-      if (piece.color !== this.whoIsInCheck) {
+      if (piece.color !== originalWhoIsInCheck) {
         console.log(
           `Skipping ${piece.color} piece at position ${position} because it's not the player's turn.`
         );
@@ -336,6 +337,7 @@ class Chessboard {
               console.log(
                 `Moving piece from ${position} to ${potentialDestination} resolves the check. It's not checkmate.`
               );
+              this.whoIsInCheck = originalWhoIsInCheck;
               return false;
             } else {
               console.log(
@@ -353,7 +355,8 @@ class Chessboard {
     this.turn = originalTurn;
 
     console.log("No moves resolve the check. It's checkmate!");
-    this.WhoIsCheckmate = this.whoIsInCheck;
+    this.WhoIsCheckmate = originalWhoIsInCheck;
+    this.whoIsInCheck = originalWhoIsInCheck;
 
     return true;
   }
@@ -365,5 +368,3 @@ class Chessboard {
 }
 
 export default Chessboard;
-
-// isKingInCheck needs cloned chessboard from isCheckmate
