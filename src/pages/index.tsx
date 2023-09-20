@@ -9,10 +9,10 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Game | Queen&apos;s Quest</title>
+        <title>Game | Rook &apos;n&apos; Roll</title>
       </Head>
       <div className="flex flex-col justify-center items-center">
-        <Header pageTitle="Queen's Quest" />
+        <Header pageTitle="Rook 'n' Roll" />
         <ChessGame />
       </div>
     </>

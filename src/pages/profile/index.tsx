@@ -6,7 +6,7 @@ export default function profile() {
   return (
     <>
       <Head>
-        <title>Profile | Queen&apos;s Quest</title>
+        <title>Profile | Rook &apos;n&apos; Roll</title>
       </Head>
       <div className="flex flex-col justify-center items-center">
         <Header pageTitle="Profile" />
