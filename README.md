@@ -1,4 +1,4 @@
-# Queen's Quest Chess App
+# Rook 'n' Roll App
 
 This chess application is a work in progress, but as of August 09 2023 the main functionality lies in being able to play a game of chess against oneself. The app will only allow legal moves and recognizes check and checkmate.
 
